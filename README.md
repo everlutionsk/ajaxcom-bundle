@@ -80,7 +80,7 @@ Example:
 ```
 The following methods can be combined - eg. you can render multiple blocks and remove multiple blocks and add as many JavaScript callbacks within one request as you wish.
 
-### `protected function render($view, array $parameters = array(), Response $response = null)`
+### `public function render($view, array $parameters = array(), Response $response = null)`
 
 Everlution's Ajaxcom bundle extends standard Symfony's `render()` method so you can integrate Ajaxcom with your project without any further changes within your codebase.
 
