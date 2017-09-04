@@ -1,0 +1,15 @@
+services:
+    dm.ajaxcom:
+        class: DM\AjaxCom\Handler
+        public: false
+
+    ajaxcom.handler:
+        class: Everlution\AjaxcomBundle\Ajaxcom
+        public: false
+        arguments:
+            - '@dm.ajaxcom'
+            - '@session'
+            - '@twig'
+            - '@router'
+            - '%everlution.ajaxcom.flash_template%'
+            - '%everlution.ajaxcom.flash_block_id%'

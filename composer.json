@@ -1,0 +1,23 @@
+{
+    "name": "everlutionsk/ajaxcom-bundle",
+    "description": "Symfony bundle for Ajaxcom library",
+    "type": "symfony-bundle",
+    "autoload": {
+        "psr-4": {
+            "Everlution\\AjaxcomBundle\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^7.0",
+        "symfony/http-foundation": "^3.0",
+        "symfony/routing": "^3.0",
+        "symfony/dependency-injection": "^3.0",
+        "symfony/http-kernel": "^3.0",
+        "symfony/templating": "^3.0",
+        "dm/ajaxcom": "^1.6"
+    },
+    "license": "MIT",
+    "authors": [
+        {"name": "Ivan Barlog", "email": "ivan.barlog@everlution.sk"}
+    ]
+}
