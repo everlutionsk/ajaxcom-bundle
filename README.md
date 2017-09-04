@@ -60,7 +60,7 @@ You don't need to configure anything if you wish to use the flash message templa
 ```yaml
 # following are default values
 everlution_ajaxcom:
-    flash_template: EverlutionAjaxCom::flash_message.html.twig
+    flash_template: @EverlutionAjaxcom/flash_message.html.twig
     flash_block_id: flash_message
 ```
 
