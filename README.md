@@ -33,6 +33,26 @@ class AppKernel extends Kernel
 }
 ```
 
+### Step 3: Include Ajaxcom library JavasSript within your TWIG layout
+
+```twig
+{% javascripts '../vendor/dm/ajaxcom/src/DM/AjaxCom/Resources/public/js/ajaxcom.js' %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+```
+
+The last thing you need to do is provide some JavaScript handler within your TWIG layout:
+
+```javascript
+<script>
+    $(document).ajaxcom("[data-ajaxcom]", {
+        beforeSend : function(xhr, settings, options) { /* provide your callback for instance spinner.start() to indicate loading of Ajax request */ },
+        success: function() {  },
+        complete: function() { /* provide your callback for instance some callbacks which should be called after each request + spinner.stop() */ }
+    });
+</script>
+```
+
 ## Configuration
 
 You don't need to configure anything if you wish to use the flash message templates provided by the bundle.
