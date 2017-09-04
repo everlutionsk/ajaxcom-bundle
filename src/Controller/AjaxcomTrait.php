@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller;
+namespace Everlution\AjaxcomBundle\Controller;
 
 use Everlution\AjaxcomBundle\Callback;
 use Everlution\AjaxcomBundle\Ajaxcom;
