@@ -5,7 +5,6 @@ services:
 
     ajaxcom.handler:
         class: Everlution\AjaxcomBundle\Ajaxcom
-        public: false
         arguments:
             - '@dm.ajaxcom'
             - '@session'
