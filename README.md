@@ -196,7 +196,7 @@ The flash messages are automatically handled by Ajaxcom bundle and when the requ
 You only need to include provided twig template somewhere within your twig layout:
 
 ```twig
-{% include "EverlutionAjaxcomBundle::flash_message.html.twig" %}
+{% include "@EverlutionAjaxcom/flash_message.html.twig" %}
 ```  
 
 When you calling `addFlash()` from your controller, please use `Everlution\AjaxcomBundle\Flash` to provide the flash message type:
