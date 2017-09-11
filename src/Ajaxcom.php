@@ -39,8 +39,6 @@ class Ajaxcom
     private $addBlocks = [];
     /** @var string[] */
     private $removeBlocks = [];
-    /** @var Callback[] */
-    private $callbacks = [];
     /** @var bool */
     private $modal = false;
 
@@ -116,7 +114,9 @@ class Ajaxcom
 
     public function addCallback(Callback $callback)
     {
-        $this->callbacks[] = $callback;
+        $callbacks = $this->session->get(self::AJAXCOM_CALLBACKS, []);
+        $callbacks[] = $callback;
+        $this->session->set(self::AJAXCOM_CALLBACKS, $callbacks);
 
         return $this;
     }
@@ -228,9 +228,12 @@ class Ajaxcom
      */
     private function addCallbacks(Handler $ajax): Handler
     {
-        foreach ($this->callbacks as $callback) {
+        $callbacks = $this->session->get(self::AJAXCOM_CALLBACKS, []);
+        /** @var Callback $callback */
+        foreach ($callbacks as $callback) {
             $ajax->callback($callback->getFunction(), $callback->getParameters());
         }
+        $this->session->remove(self::AJAXCOM_CALLBACKS);
 
         return $ajax;
     }

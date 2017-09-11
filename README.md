@@ -216,4 +216,4 @@ $this-addFlash(Everlution\AjaxcomBundle\Flash::SUCCESS, 'Your request has been s
 - add example for rendering modal
 - add twig templates for rendering modal
 - add complex usage example
-
+- add FormType documentation
