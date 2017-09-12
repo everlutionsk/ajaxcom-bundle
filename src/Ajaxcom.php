@@ -34,6 +34,8 @@ class Ajaxcom
     private $flashesTemplate;
     /** @var string */
     private $flashesBlockId;
+    /** @var string */
+    private $persistentClass;
 
     /** @var Block[] */
     private $addBlocks = [];
@@ -48,7 +50,8 @@ class Ajaxcom
         \Twig_Environment $twig,
         UrlGeneratorInterface $router,
         string $flashesTemplate,
-        string $flashesBlockId
+        string $flashesBlockId,
+        string $persistentClass
     ) {
         $this->handler = $handler;
         $this->session = $session;
@@ -56,6 +59,7 @@ class Ajaxcom
         $this->router = $router;
         $this->flashesTemplate = $flashesTemplate;
         $this->flashesBlockId = $flashesBlockId;
+        $this->persistentClass = $persistentClass;
     }
 
     public function handle(string $view, array $parameters = [], Request $request): JsonResponse
@@ -68,6 +72,9 @@ class Ajaxcom
             return new JsonResponse($ajax->respond(), JsonResponse::HTTP_OK, self::AJAX_COM_CACHE_CONTROL);
         }
 
+        $ajax = $this->replaceJavaScripts($ajax, $view, $parameters);
+        $ajax = $this->replaceStyleSheets($ajax, $view, $parameters);
+        $ajax = $this->replaceMetaTags($ajax, $view, $parameters);
         $ajax = $this->renderFlashMessages($ajax);
         $ajax = $this->removeBlock($ajax);
         $ajax = $this->addBlocks($ajax, $view, $parameters);
@@ -77,29 +84,19 @@ class Ajaxcom
         return new JsonResponse($ajax->respond(), JsonResponse::HTTP_OK, self::AJAX_COM_CACHE_CONTROL);
     }
 
-    /**
-     * @param string $id
-     *
-     * @return Ajaxcom
-     */
-    public function removeAjaxBlock(string $id): self
+    public function removeAjaxBlock(string $selector): self
     {
-        $this->removeBlocks[] = $id;
+        $this->removeBlocks[] = $selector;
 
         return $this;
     }
+
 
     public function renderModal()
     {
         $this->modal = true;
     }
 
-    /**
-     * @param string $id
-     * @param array $callbacks
-     *
-     * @return Ajaxcom
-     */
     public function renderAjaxBlock(string $id, array $callbacks = []): self
     {
         $ajaxCallbacks = [];
@@ -121,12 +118,6 @@ class Ajaxcom
         return $this;
     }
 
-    /**
-     * @param Handler $ajax
-     * @param Block $block
-     *
-     * @return Handler
-     */
     private function addBlockCallbacks(Handler $ajax, Block $block): Handler
     {
         foreach ($block->getCallbacks() as $callback) {
@@ -136,12 +127,6 @@ class Ajaxcom
         return $ajax;
     }
 
-    /**
-     * @param Handler $ajax
-     * @param Request $request
-     *
-     * @return Handler
-     */
     private function changeUrl(Handler $ajax, Request $request): Handler
     {
         $ajax->changeUrl(
@@ -154,11 +139,6 @@ class Ajaxcom
         return $ajax;
     }
 
-    /**
-     * @param Handler $ajax
-     *
-     * @return Handler
-     */
     private function renderFlashMessages(Handler $ajax): Handler
     {
         $flashBag = $this->session->getFlashBag();
@@ -175,39 +155,20 @@ class Ajaxcom
         return $ajax;
     }
 
-    /**
-     * @param string $template
-     * @param string $blockId
-     * @param array $parameters
-     *
-     * @return string
-     */
     private function renderBlock(string $template, string $blockId, array $parameters = []): string
     {
         return $this->twig->load($template)->renderBlock($blockId, $parameters);
     }
 
-    /**
-     * @param Handler $ajax
-     *
-     * @return Handler
-     */
     private function removeBlock(Handler $ajax): Handler
     {
-        foreach ($this->removeBlocks as $blockId) {
-            $ajax->container(sprintf('#%s', $blockId))->html('');
+        foreach ($this->removeBlocks as $selector) {
+            $ajax->container($selector)->remove();
         }
 
         return $ajax;
     }
 
-    /**
-     * @param Handler $ajax
-     * @param string $view
-     * @param array $parameters
-     *
-     * @return Handler
-     */
     private function addBlocks(Handler $ajax, string $view, array $parameters): Handler
     {
         $template = $template = $this->twig->load($view);
@@ -221,19 +182,43 @@ class Ajaxcom
         return $ajax;
     }
 
-    /**
-     * @param Handler $ajax
-     *
-     * @return Handler
-     */
     private function addCallbacks(Handler $ajax): Handler
     {
         $callbacks = $this->session->get(self::AJAXCOM_CALLBACKS, []);
-        /** @var Callback $callback */
         foreach ($callbacks as $callback) {
             $ajax->callback($callback->getFunction(), $callback->getParameters());
         }
         $this->session->remove(self::AJAXCOM_CALLBACKS);
+
+        return $ajax;
+    }
+
+    private function replaceJavaScripts(Handler $ajax, string $view, array $parameters): Handler
+    {
+        $ajax->container(sprintf('script:not(.%s, [nonce])', $this->persistentClass))->remove();
+        $javaScripts = $this->renderBlock($view, 'javascripts', $parameters);
+        $ajax->container('script:last-of-type')->append($javaScripts);
+
+        return $ajax;
+    }
+
+    private function replaceStyleSheets(Handler $ajax, string $view, array $parameters): Handler
+    {
+        $ajax->container(sprintf('style:not(.%s, [nonce])', $this->persistentClass))->remove();
+        $styleSheets = $this->renderBlock($view, 'stylesheets', $parameters);
+        $ajax->container('style:last-of-type')->append($styleSheets);
+
+        return $ajax;
+    }
+
+    private function replaceMetaTags(Handler $ajax, string $view, array $parameters): Handler
+    {
+        $ajax->container(sprintf('meta:not(.%s)', $this->persistentClass))->remove();
+        $metaTags = $this->renderBlock($view, 'metatags', $parameters);
+        $ajax->container('meta:last-of-type')->append($metaTags);
+
+        $title = $this->renderBlock($view, 'title', $parameters);
+        $ajax->container('title')->html($title);
 
         return $ajax;
     }

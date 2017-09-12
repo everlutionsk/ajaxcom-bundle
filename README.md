@@ -4,7 +4,6 @@
 
 ### Step 1: Download the Bundle
 
-
 ```console
 $ composer require everlutionsk/ajaxcom-bundle
 ```
@@ -58,10 +57,11 @@ The last thing you need to do is provide some JavaScript handler within your TWI
 You don't need to configure anything if you wish to use the flash message templates provided by the bundle.
 
 ```yaml
-# following are default values
+# all configuration is optional - following values are default
 everlution_ajaxcom:
     flash_template: @EverlutionAjaxcom/flash_message.html.twig
     flash_block_id: flash_message
+    persistent_class: ajaxcom-persistent
 ```
 
 The bundle works best with Bootstrap 3+ CSS framework.
@@ -78,6 +78,7 @@ Example:
 <a href="{{ path('homepage') }}">Homepage</a> <!-- won't be handled by Ajaxcom -->
 <a href="{{ path('remove_user') }}" data-ajaxcom>Remove user</a> <!-- will be handled by Ajaxcom -->
 ```
+
 The following methods can be combined - eg. you can render multiple blocks and remove multiple blocks and add as many JavaScript callbacks within one request as you wish.
 
 ### `public function render($view, array $parameters = array(), Response $response = null)`
@@ -121,9 +122,9 @@ _Callbacks can be added as an associative array where the key is the JavaScript 
 
 When your action is called via Ajax request the JSON response for Ajaxcom library will contain information about which block should be re-rendered with which HTML. 
 
-### `removeAjaxBlock(string $id)`
+### `removeAjaxBlock(string $selector)`
 
-If you want to remove some DOM element dynamically for instance after deleting some row from table you can use `removeAjaxBlock()` method where you will simply provide ID of the element which you want to remove. The ID is simple HTML identifier.
+If you want to remove some DOM element dynamically for instance after deleting some row from table you can use `removeAjaxBlock()` method where you will simply provide CSS selector of the element which you want to remove.
 
 #### Example:
 
@@ -142,7 +143,7 @@ Twig:
 PHP:
 
 ```php
-$this-removeBlock("row-2");
+$this-removeBlock("#row-2");
 ```
 
 The below code will remove middle row from the table after the action is called.
@@ -202,7 +203,7 @@ You only need to include provided twig template somewhere within your twig layou
 When you calling `addFlash()` from your controller, please use `Everlution\AjaxcomBundle\Flash` to provide the flash message type:
 
 ```php
-$this-addFlash(Everlution\AjaxcomBundle\Flash::SUCCESS, 'Your request has been successfully handled by Ajaxcom bundle');
+$this->addFlash(Everlution\AjaxcomBundle\Flash::SUCCESS, 'Your request has been successfully handled by Ajaxcom bundle');
 
 // you can use following constants:
 // Everlution\AjaxcomBundle\Flash::SUCCESS
@@ -211,9 +212,64 @@ $this-addFlash(Everlution\AjaxcomBundle\Flash::SUCCESS, 'Your request has been s
 // Everlution\AjaxcomBundle\Flash::INFO
 ```
 
+### Sending forms through Ajaxcom
+
+You can simply extend `EverlutionAjaxcom\Form\Type\AjaxcomForm` and within your `configureOptions()` call parent function as follows:
+
+```php
+class CustomForm extends AjaxcomForm {
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+        
+        // configure your options
+        $resolver->setDefaults(['data_class' => YourDataClass::class]);
+    }
+}
+```
+
+Or you can add attribute `data-ajaxcom` to your form manually:
+
+```php
+class CustomForm extends AbstractType {
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(['attr' => ['data-ajaxcom' => '']]);
+    }
+}
+```
+
+# Best practice
+
+If you want to use AjaxcomBundle seamlessly you should copy `@EverlutionAjaxcom\layout_bootstrap_4.html.twig` to your project (eg. AppBundle) and modify it to your needs.
+
+This way the AjaxcomBundle will handle task such as replacing JavaScripts, StyleSheets, MetaTags for you.
+
+## Use automated replacement of JS, CSS, Meta and Title
+
+When you are using blocks from `@EverlutionAjaxcom\layout_bootstrap_4.html.twig` you should be all set up. When you decide to set up your layout manually following sections will help you to understand how the automatic replacement works.
+
+### replacing JavaScripts
+
+1. all JavaScript which should be included on every page needs to contain `class='ajaxcom-persistent'` (or anything you have set within configuration of bundle)
+2. your main layout which you are extending must contain `{% block javascripts %}{% endblock %}`
+3. when you are extending your main layout and you are rewriting `javascripts` block AjaxcomBundle will load scripts from this block automatically for you
+
+### replacing StyleSheets
+
+1. same as JavaScript, all StyleSheets which should be included on every page needs to containe `class='ajaxcom-persistent'` (or anything you have set within configuration of bundle)
+2. your main layout which you are extending must contain `{% block stylesheets %}{% endblock %}`
+3. when you are extending your main layout and you are rewriting `stylesheets` block AjaxcomBundle will load styles from this block automatically for you
+
+### replacing meta tags and title
+
+1. all meta tags which should be present on every page needs to contain `class='ajaxcom-persistent'` (or anything you have set within configuration of bundle)
+2. your main layout which you are extending must contain `{% block metatags %}{% endblock %}`
+3. when you are extending your main layout and you are rewriting `metatags` block AjaxcomBundle will load meta tags from this block automatically for you
+4. if you want to change `title` of page your layout needs to contain `<title>{% block title %}{% endblock %}</title>` and you need to rewrite `title` block within template where you extending your main template
+
 # TODO
 
 - add example for rendering modal
 - add twig templates for rendering modal
 - add complex usage example
-- add FormType documentation

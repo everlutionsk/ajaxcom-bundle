@@ -26,17 +26,16 @@ class Block
         }
     }
 
-    /**
-     * @return string
-     */
+    public function getSelector(): string
+    {
+        return $this->selector;
+    }
+
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return Callback[]
-     */
     public function getCallbacks(): array
     {
         uasort($this->callbacks, [$this, 'sortByPriority']);
@@ -44,11 +43,6 @@ class Block
         return $this->callbacks;
     }
 
-    /**
-     * @param $callback
-     *
-     * @return Block
-     */
     public function addCallback(Callback $callback): self
     {
         $this->callbacks[] = $callback;
@@ -56,12 +50,6 @@ class Block
         return $this;
     }
 
-    /**
-     * @param Callback $a
-     * @param Callback $b
-     *
-     * @return int
-     */
     private function sortByPriority(Callback $a, Callback $b): int
     {
         return $a->getPriority() <=> $b->getPriority();

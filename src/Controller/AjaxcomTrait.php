@@ -23,7 +23,7 @@ trait AjaxcomTrait
             return $this->get('ajaxcom.handler')->handle($view, $parameters, $request);
         }
 
-        return parent::render($view, $parameters);
+        return parent::render($view, $parameters, $response);
     }
 
     protected function renderAjaxBlock(string $id, array $callbacks = []): self

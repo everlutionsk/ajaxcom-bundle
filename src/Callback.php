@@ -25,25 +25,16 @@ class Callback
         $this->priority = $priority;
     }
 
-    /**
-     * @return string
-     */
     public function getFunction(): string
     {
         return $this->function;
     }
 
-    /**
-     * @return array
-     */
     public function getParameters(): array
     {
         return $this->parameters;
     }
 
-    /**
-     * @return int
-     */
     public function getPriority(): int
     {
         return $this->priority;

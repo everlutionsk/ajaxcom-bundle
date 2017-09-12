@@ -12,3 +12,4 @@ services:
             - '@router'
             - '%everlution.ajaxcom.flash_template%'
             - '%everlution.ajaxcom.flash_block_id%'
+            - '%everlution.ajaxcom.persistent_class%'
