@@ -62,6 +62,7 @@ everlution_ajaxcom:
     flash_template: @EverlutionAjaxcom/flash_message.html.twig
     flash_block_id: flash_message
     persistent_class: ajaxcom-persistent
+    blocks_to_render: ['content', 'navigation'] # default value is empty array
 ```
 
 The bundle works best with Bootstrap 3+ CSS framework.

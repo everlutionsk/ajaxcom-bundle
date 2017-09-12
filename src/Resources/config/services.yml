@@ -13,3 +13,4 @@ services:
             - '%everlution.ajaxcom.flash_template%'
             - '%everlution.ajaxcom.flash_block_id%'
             - '%everlution.ajaxcom.persistent_class%'
+            - '%everlution.ajaxcom.blocks_to_render%'

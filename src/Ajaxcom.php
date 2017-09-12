@@ -34,9 +34,9 @@ class Ajaxcom
     private $flashesTemplate;
     /** @var string */
     private $flashesBlockId;
+
     /** @var string */
     private $persistentClass;
-
     /** @var Block[] */
     private $addBlocks = [];
     /** @var string[] */
@@ -51,7 +51,8 @@ class Ajaxcom
         UrlGeneratorInterface $router,
         string $flashesTemplate,
         string $flashesBlockId,
-        string $persistentClass
+        string $persistentClass,
+        array $blocksToRender = []
     ) {
         $this->handler = $handler;
         $this->session = $session;
@@ -60,6 +61,10 @@ class Ajaxcom
         $this->flashesTemplate = $flashesTemplate;
         $this->flashesBlockId = $flashesBlockId;
         $this->persistentClass = $persistentClass;
+
+        foreach ($blocksToRender as $block) {
+            $this->renderAjaxBlock($block);
+        }
     }
 
     public function handle(string $view, array $parameters = [], Request $request): JsonResponse
@@ -174,7 +179,16 @@ class Ajaxcom
         $template = $template = $this->twig->load($view);
 
         foreach ($this->addBlocks as $block) {
+            if (false === $template->hasBlock($block->getId())) {
+                continue;
+            }
+
             $html = $template->renderBlock($block->getId(), $parameters);
+
+            if (empty($html)) {
+                continue;
+            }
+
             $ajax->container(sprintf('#%s', $block->getId()))->html($html);
             $ajax = $this->addBlockCallbacks($ajax, $block);
         }

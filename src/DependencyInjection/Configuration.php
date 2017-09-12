@@ -21,9 +21,12 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->scalarNode('flash_template')->defaultValue('@EverlutionAjaxcom/flash_message.html.twig')->end()
-            ->scalarNode('flash_block_id')->defaultValue('flash_message')->end()
-            ->scalarNode('persistent_class')->defaultValue('ajaxcom-persistent')->end()
+                ->scalarNode('flash_template')->defaultValue('@EverlutionAjaxcom/flash_message.html.twig')->end()
+                ->scalarNode('flash_block_id')->defaultValue('flash_message')->end()
+                ->scalarNode('persistent_class')->defaultValue('ajaxcom-persistent')->end()
+                ->arrayNode('blocks_to_render')
+                    ->prototype('scalar')->end()
+                ->end()
             ->end();
 
         return $treeBuilder;
