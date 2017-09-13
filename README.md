@@ -62,7 +62,7 @@ everlution_ajaxcom:
     flash_template: @EverlutionAjaxcom/flash_message.html.twig
     flash_block_id: flash_message
     persistent_class: ajaxcom-persistent
-    blocks_to_render: ['content', 'navigation'] # default value is empty array
+    blocks_to_render: ['content', 'navigation'] # default value is empty array - when you provide this value, AjaxcomBundle will automatically render these blocks within each AJAX request
 ```
 
 The bundle works best with Bootstrap 3+ CSS framework.
@@ -71,7 +71,7 @@ The bundle works best with Bootstrap 3+ CSS framework.
 
 Extend your controller from `Everlution\AjaxcomBundle\Controller\Controller` or use `Everlution\AjaxcomBundle\Controller\AjaxcomTrait` trait with your controller to obtain Ajaxcom functionality.
 
-Every link which you want to call via Ajaxcom must contain `data-ajaxcom` attribute.
+Every link which you want to call via Ajaxcom must contain `data-ajaxcom` attribute. You can change this behaviour in JavaScript Ajaxcom handler.
 
 Example:
 
@@ -92,7 +92,7 @@ The Ajaxcom bundle will handle your Symfony controller's action with Ajax and no
 
 Within your standard Symfony controller's action you will have only tiny overhead which will setup the action's behaviour for handling the Ajax requests. The overhead methods are explained in next few sections.
 
-### `renderAjaxBlock(string $id, array $callbacks = [])`
+### `renderAjaxBlock(string $id)`
 
 In order to dynamically render only one block on page you need to fit following two conditions:
 
@@ -117,11 +117,9 @@ PHP:
 $this->renderAjaxBlock("list");
 ```
 
-Within your action in the controller then simply call `renderAjaxBlock` where as first argument you need to provide the block ID and as a second argument you can provide an array of JavaScript callbacks which will be called after the block is rendered via Ajaxcom library.
+In action of your controller simply call `renderAjaxBlock` where you need to provide the block ID (eg. TWIG block name).
 
-_Callbacks can be added as an associative array where the key is the JavaScript function name and the value is an array of arguments which will be passed as an object to the JavaScript function. See `addCallback(string $function, array $parameters = [])` section for further information._
-
-When your action is called via Ajax request the JSON response for Ajaxcom library will contain information about which block should be re-rendered with which HTML. 
+When your action is called via Ajax request the JSON response for Ajaxcom library will contain information about which block should be re-rendered with which HTML.
 
 ### `removeAjaxBlock(string $selector)`
 
@@ -144,13 +142,16 @@ Twig:
 PHP:
 
 ```php
-$this-removeBlock("#row-2");
+$this->removeBlock("#row-2");
+
+// OR you can use any CSS selector
+
+$this->removeBlock("tr:nth-child(2)");
 ```
 
-The below code will remove middle row from the table after the action is called.
+The above code (both examples) will remove middle row from the table after the action is called.
 
 Result:
-
 
 ```twig
 <table>
@@ -189,11 +190,11 @@ var Table = function() {
 
 ### `renderModal()`
 
-When you invoke this function within your controller's action, the content which action returns will be rendered within a modal window.
+When you invoke this function within the action of your controller, the response will be rendered as a modal window.
 
 ### Flash messages
 
-The flash messages are automatically handled by Ajaxcom bundle and when the request is called via Ajax the flashes which are in the session are rendered automatically.
+The flash messages are automatically handled by Ajaxcom bundle. When the request is called via Ajax the flashes which are in the session bag are rendered automatically.
 
 You only need to include provided twig template somewhere within your twig layout:
 
@@ -201,7 +202,7 @@ You only need to include provided twig template somewhere within your twig layou
 {% include "@EverlutionAjaxcom/flash_message.html.twig" %}
 ```  
 
-When you calling `addFlash()` from your controller, please use `Everlution\AjaxcomBundle\Flash` to provide the flash message type:
+When you call `addFlash()` from your controller, please use `Everlution\AjaxcomBundle\Flash` to provide the flash message type:
 
 ```php
 $this->addFlash(Everlution\AjaxcomBundle\Flash::SUCCESS, 'Your request has been successfully handled by Ajaxcom bundle');
@@ -215,7 +216,7 @@ $this->addFlash(Everlution\AjaxcomBundle\Flash::SUCCESS, 'Your request has been 
 
 ### Sending forms through Ajaxcom
 
-You can simply extend `EverlutionAjaxcom\Form\Type\AjaxcomForm` and within your `configureOptions()` call parent function as follows:
+You can simply extend `EverlutionAjaxcom\Form\Type\AjaxcomForm`. In `configureOptions()` then call parent method as follows:
 
 ```php
 class CustomForm extends AjaxcomForm {
@@ -244,11 +245,13 @@ class CustomForm extends AbstractType {
 
 If you want to use AjaxcomBundle seamlessly you should copy `@EverlutionAjaxcom\layout_bootstrap_4.html.twig` to your project (eg. AppBundle) and modify it to your needs.
 
-This way the AjaxcomBundle will handle task such as replacing JavaScripts, StyleSheets, MetaTags for you.
+This way the AjaxcomBundle will handle tasks such as replacing JavaScripts, StyleSheets and MetaTags for you.
 
 ## Use automated replacement of JS, CSS, Meta and Title
 
-When you are using blocks from `@EverlutionAjaxcom\layout_bootstrap_4.html.twig` you should be all set up. When you decide to set up your layout manually following sections will help you to understand how the automatic replacement works.
+When you are using blocks from `@EverlutionAjaxcom\layout_bootstrap_4.html.twig` you should be all set up.
+ 
+When you decide to set up your layout manually following sections will help you to understand how the automatic replacement works.
 
 ### replacing JavaScripts
 

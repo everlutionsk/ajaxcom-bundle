@@ -1,16 +1,91 @@
 services:
+    ajaxcom.handler:
+        class: Everlution\AjaxcomBundle\Service\Ajaxcom
+        arguments:
+            - '@dm.ajaxcom'
+            - "@ajaxcom.handler.modal_window"
+            - "@ajaxcom.handler.replace_java_scripts"
+            - "@ajaxcom.handler.replace_style_sheets"
+            - "@ajaxcom.handler.replace_meta_tags"
+            - "@ajaxcom.handler.replace_title"
+            - "@ajaxcom.handler.flash_messages"
+            - "@ajaxcom.handler.remove_blocks"
+            - "@ajaxcom.handler.add_blocks"
+            - "@ajaxcom.handler.callbacks"
+            - "@ajaxcom.handler.change_url"
+
     dm.ajaxcom:
         class: DM\AjaxCom\Handler
         public: false
 
-    ajaxcom.handler:
-        class: Everlution\AjaxcomBundle\Ajaxcom
+    ajaxcom.render_block:
+        class: Everlution\AjaxcomBundle\Service\RenderBlock
+        public: false
         arguments:
-            - '@dm.ajaxcom'
-            - '@session'
-            - '@twig'
-            - '@router'
-            - '%everlution.ajaxcom.flash_template%'
-            - '%everlution.ajaxcom.flash_block_id%'
-            - '%everlution.ajaxcom.persistent_class%'
-            - '%everlution.ajaxcom.blocks_to_render%'
+            - "@twig"
+
+    ajaxcom.handler.add_blocks:
+        class: Everlution\AjaxcomBundle\Handler\AddBlocks
+        public: false
+        arguments:
+            - "@ajaxcom.render_block"
+            - "%everlution.ajaxcom.blocks_to_render%"
+
+    ajaxcom.handler.callbacks:
+        class: Everlution\AjaxcomBundle\Handler\Callbacks
+        public: false
+        arguments:
+            - "@session"
+
+    ajaxcom.handler.change_url:
+        class: Everlution\AjaxcomBundle\Handler\ChangeUrl
+        public: false
+        arguments:
+            - "@request_stack"
+            - "@router.default"
+
+    ajaxcom.handler.flash_messages:
+        class: Everlution\AjaxcomBundle\Handler\FlashMessages
+        public: false
+        arguments:
+            - "@ajaxcom.render_block"
+            - "@session"
+            - "%everlution.ajaxcom.flash_template%"
+            - "%everlution.ajaxcom.flash_block_id%"
+
+    ajaxcom.handler.modal_window:
+        class: Everlution\AjaxcomBundle\Handler\ModalWindow
+        public: false
+        arguments:
+            - "@twig"
+
+    ajaxcom.handler.remove_blocks:
+        class: Everlution\AjaxcomBundle\Handler\RemoveBlocks
+        public: false
+
+    ajaxcom.handler.replace_java_scripts:
+        class: Everlution\AjaxcomBundle\Handler\ReplaceJavaScripts
+        public: false
+        arguments:
+            - "@ajaxcom.render_block"
+            - "%everlution.ajaxcom.persistent_class%"
+
+    ajaxcom.handler.replace_meta_tags:
+        class: Everlution\AjaxcomBundle\Handler\ReplaceMetaTags
+        public: false
+        arguments:
+            - "@ajaxcom.render_block"
+            - "%everlution.ajaxcom.persistent_class%"
+
+    ajaxcom.handler.replace_style_sheets:
+        class: Everlution\AjaxcomBundle\Handler\ReplaceStyleSheets
+        public: false
+        arguments:
+            - "@ajaxcom.render_block"
+            - "%everlution.ajaxcom.persistent_class%"
+
+    ajaxcom.handler.replace_title:
+        class: Everlution\AjaxcomBundle\Handler\ReplaceTitle
+        public: false
+        arguments:
+            - "@ajaxcom.render_block"

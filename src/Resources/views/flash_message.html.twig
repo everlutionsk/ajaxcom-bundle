@@ -1,14 +1,14 @@
 {% set flashes = app.flashes %}
 <div class="row" id="flash_message">
-{% if flashes|length > 0 %}
-    {% block flash_message %}
-    <div class="col-md-12 md-margin-bottom-40">
-        {% for type, messages in flashes %}
-            {% for message in messages %}
-                {% include "EverlutionAjaxcomBundle::dismissible_message.html.twig" with {type: type, message: message|trans} %}
-            {% endfor %}
-        {% endfor %}
-    </div>
-    {% endblock %}
-{% endif %}
+    {% if flashes|length > 0 %}
+        {% block flash_message %}
+            <div class="col-md-12 md-margin-bottom-40">
+                {% for type, messages in flashes %}
+                    {% for message in messages %}
+                        {% include "EverlutionAjaxcomBundle::dismissible_message.html.twig" with {type: type, message: message|trans} %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% endblock %}
+    {% endif %}
 </div>

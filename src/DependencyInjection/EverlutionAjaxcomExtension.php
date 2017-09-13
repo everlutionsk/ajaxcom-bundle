@@ -21,10 +21,10 @@ class EverlutionAjaxcomExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter("everlution.ajaxcom.flash_template", $config['flash_template']);
-        $container->setParameter("everlution.ajaxcom.flash_block_id", $config['flash_block_id']);
-        $container->setParameter("everlution.ajaxcom.persistent_class", $config['persistent_class']);
-        $container->setParameter("everlution.ajaxcom.blocks_to_render", $config['blocks_to_render']);
+        $container->setParameter('everlution.ajaxcom.flash_template', $config['flash_template']);
+        $container->setParameter('everlution.ajaxcom.flash_block_id', $config['flash_block_id']);
+        $container->setParameter('everlution.ajaxcom.persistent_class', $config['persistent_class']);
+        $container->setParameter('everlution.ajaxcom.blocks_to_render', $config['blocks_to_render']);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

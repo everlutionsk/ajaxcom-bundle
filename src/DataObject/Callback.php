@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Everlution\AjaxcomBundle;
+namespace Everlution\AjaxcomBundle\DataObject;
 
 /**
  * Class Callback.

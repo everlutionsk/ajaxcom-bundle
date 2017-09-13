@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class AjaxcomForm.
+ *
  * @author Ivan Barlog <ivan.barlog@everlution.sk>
  */
 class AjaxcomForm extends AbstractType
@@ -17,8 +18,7 @@ class AjaxcomForm extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'attr' =>
-                    [
+                'attr' => [
                         'novalidate' => 'novalidate',
                         'data-ajaxcom' => '',
                     ],
