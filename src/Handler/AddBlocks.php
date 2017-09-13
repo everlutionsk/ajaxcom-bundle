@@ -32,6 +32,10 @@ class AddBlocks
 
     public function handle(Handler $ajax, string $view, array $parameters = []): Handler
     {
+        if (empty($this->blocks)) {
+            return $ajax;
+        }
+        
         foreach ($this->blocks as $block) {
             try {
                 $html = $this->renderBlock->render($view, $block->getId(), $parameters);
