@@ -13,6 +13,7 @@ services:
             - "@ajaxcom.handler.add_blocks"
             - "@ajaxcom.handler.callbacks"
             - "@ajaxcom.handler.change_url"
+            - "@ajaxcom.handler.replace_class"
 
     dm.ajaxcom:
         class: DM\AjaxCom\Handler
