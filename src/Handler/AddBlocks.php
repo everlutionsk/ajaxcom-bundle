@@ -19,24 +19,22 @@ class AddBlocks
     /** @var RenderBlock */
     private $renderBlock;
     /** @var Block[] */
-    private $blocks;
+    private $blocks = [];
+    /** @var Block[] */
+    private $defaultBlocks = [];
 
     public function __construct(RenderBlock $renderBlock, array $blocksToRender = [])
     {
         $this->renderBlock = $renderBlock;
 
         foreach ($blocksToRender as $id) {
-            $this->pushBlock($id);
+            $this->defaultBlocks[] = new Block($id);
         }
     }
 
     public function handle(Handler $ajax, string $view, array $parameters = []): Handler
     {
-        if (empty($this->blocks)) {
-            return $ajax;
-        }
-        
-        foreach ($this->blocks as $block) {
+        foreach ($this->getBlocks() as $block) {
             try {
                 $html = $this->renderBlock->render($view, $block->getId(), $parameters);
                 $ajax->container(sprintf('#%s', $block->getId()))->html($html);
@@ -48,19 +46,18 @@ class AddBlocks
         return $ajax;
     }
 
-    public function pushBlock(string $id)
-    {
-        $this->blocks[] = new Block($id);
-    }
-
     public function add(string $id): self
     {
-        if (false === empty($this->blocks)) {
-            $this->blocks = [];
-        }
-
-        $this->pushBlock($id);
+        $this->blocks[] = new Block($id);
 
         return $this;
+    }
+
+    /**
+     * @return Block[]
+     */
+    private function getBlocks(): array
+    {
+        return empty($this->blocks) ? $this->defaultBlocks : $this->blocks;
     }
 }

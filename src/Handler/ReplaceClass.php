@@ -8,6 +8,7 @@ use DM\AjaxCom\Handler;
 
 /**
  * Class ReplaceClass.
+ *
  * @author Ivan Barlog <ivan.barlog@everlution.sk>
  */
 class ReplaceClass

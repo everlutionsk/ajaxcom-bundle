@@ -43,7 +43,7 @@ class Ajaxcom
     private $replaceTitle;
     /** @var FlashMessages */
     private $flashMessages;
-    /** @var \Everlution\AjaxcomBundle\Handler\RemoveBlocks */
+    /** @var RemoveBlocks */
     private $removeBlocks;
     /** @var AddBlocks */
     private $addBlocks;
@@ -137,7 +137,7 @@ class Ajaxcom
 
     public function replaceClass(string $selector, string $class)
     {
-        $this->replaceClass($selector, $class);
+        $this->replaceClass->add($selector, $class);
 
         return $this;
     }
