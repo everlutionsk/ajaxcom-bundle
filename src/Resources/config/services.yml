@@ -89,3 +89,9 @@ services:
         public: false
         arguments:
             - "@ajaxcom.render_block"
+
+    ajaxcom.handler.replace_class:
+        class: Everlution\AjaxcomBundle\Handler\ReplaceClass
+        public: false
+        arguments:
+            - "@ajaxcom.render_block"

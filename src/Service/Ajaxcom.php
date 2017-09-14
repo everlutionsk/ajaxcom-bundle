@@ -10,6 +10,7 @@ use Everlution\AjaxcomBundle\Handler\Callbacks;
 use Everlution\AjaxcomBundle\Handler\ChangeUrl;
 use Everlution\AjaxcomBundle\Handler\FlashMessages;
 use Everlution\AjaxcomBundle\Handler\ModalWindow;
+use Everlution\AjaxcomBundle\Handler\ReplaceClass;
 use Everlution\AjaxcomBundle\Handler\ReplaceJavaScripts;
 use Everlution\AjaxcomBundle\Handler\ReplaceMetaTags;
 use Everlution\AjaxcomBundle\Handler\ReplaceStyleSheets;
@@ -50,6 +51,8 @@ class Ajaxcom
     private $callbacks;
     /** @var ChangeUrl */
     private $changeUrl;
+    /** @var ReplaceClass */
+    private $replaceClass;
 
     public function __construct(
         Handler $handler,
@@ -62,7 +65,8 @@ class Ajaxcom
         RemoveBlocks $removeBlocks,
         AddBlocks $addBlocks,
         Callbacks $callbacks,
-        ChangeUrl $changeUrl
+        ChangeUrl $changeUrl,
+        ReplaceClass $replaceClass
     ) {
         $this->handler = $handler;
         $this->modalWindow = $modalWindow;
@@ -75,6 +79,7 @@ class Ajaxcom
         $this->addBlocks = $addBlocks;
         $this->callbacks = $callbacks;
         $this->changeUrl = $changeUrl;
+        $this->replaceClass = $replaceClass;
     }
 
     public function handle(string $view, array $parameters = []): JsonResponse
@@ -95,6 +100,7 @@ class Ajaxcom
         $ajax = $this->flashMessages->handle($ajax);
         $ajax = $this->removeBlocks->handle($ajax);
         $ajax = $this->addBlocks->handle($ajax, $view, $parameters);
+        $ajax = $this->replaceClass->handle($ajax);
         $ajax = $this->callbacks->handle($ajax);
         $ajax = $this->changeUrl->handle($ajax);
 
@@ -125,6 +131,13 @@ class Ajaxcom
     public function renderAsModal(): self
     {
         $this->modalWindow->renderAsModal();
+
+        return $this;
+    }
+
+    public function replaceClass(string $selector, string $class)
+    {
+        $this->replaceClass($selector, $class);
 
         return $this;
     }

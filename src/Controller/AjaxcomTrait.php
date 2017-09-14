@@ -33,9 +33,9 @@ trait AjaxcomTrait
         return $this;
     }
 
-    protected function removeAjaxBlock(string $id): self
+    protected function removeAjaxBlock(string $selector): self
     {
-        $this->get('ajaxcom.handler')->removeBlock($id);
+        $this->get('ajaxcom.handler')->removeBlock($selector);
 
         return $this;
     }
@@ -50,6 +50,13 @@ trait AjaxcomTrait
     protected function renderModal(): self
     {
         $this->get('ajaxcom.handler')->renderAsModal();
+
+        return $this;
+    }
+
+    protected function replaceClass(string $selector, string $class): self
+    {
+        $this->get('ajaxcom.handler')->replaceClass($selector, $class);
 
         return $this;
     }

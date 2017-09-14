@@ -192,6 +192,10 @@ var Table = function() {
 
 When you invoke this function within the action of your controller, the response will be rendered as a modal window.
 
+### `replaceClass()`
+
+You can easily replace class in any DOM object you want by invoking `replaceClass()` with two arguments - first is CSS selector of your choice and second is class which you want to replace current one with.
+
 ### Flash messages
 
 The flash messages are automatically handled by Ajaxcom bundle. When the request is called via Ajax the flashes which are in the session bag are rendered automatically.

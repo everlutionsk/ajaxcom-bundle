@@ -26,7 +26,7 @@ class AddBlocks
         $this->renderBlock = $renderBlock;
 
         foreach ($blocksToRender as $id) {
-            $this->add($id);
+            $this->pushBlock($id);
         }
     }
 
@@ -44,9 +44,18 @@ class AddBlocks
         return $ajax;
     }
 
-    public function add(string $id): self
+    public function pushBlock(string $id)
     {
         $this->blocks[] = new Block($id);
+    }
+
+    public function add(string $id): self
+    {
+        if (false === empty($this->blocks)) {
+            $this->blocks = [];
+        }
+
+        $this->pushBlock($id);
 
         return $this;
     }
