@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Everlution\AjaxcomBundle\Handler;
 
-use DM\AjaxCom\Handler;
+use Everlution\Ajaxcom\Handler;
 
 /**
  * Class ModalWindow.
