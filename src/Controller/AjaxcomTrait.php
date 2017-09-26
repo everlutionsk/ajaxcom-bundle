@@ -47,13 +47,6 @@ trait AjaxcomTrait
         return $this;
     }
 
-    protected function renderModal(): self
-    {
-        $this->get('ajaxcom.handler')->renderAsModal();
-
-        return $this;
-    }
-
     protected function replaceClass(string $selector, string $class): self
     {
         $this->get('ajaxcom.handler')->replaceClass($selector, $class);

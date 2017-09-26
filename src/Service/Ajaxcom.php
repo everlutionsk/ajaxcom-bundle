@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Everlution\AjaxcomBundle\Service;
 
-use DM\AjaxCom\Handler;
+use Everlution\Ajaxcom\Handler;
 use Everlution\AjaxcomBundle\Handler\AddBlocks;
 use Everlution\AjaxcomBundle\Handler\Callbacks;
 use Everlution\AjaxcomBundle\Handler\ChangeUrl;
 use Everlution\AjaxcomBundle\Handler\FlashMessages;
-use Everlution\AjaxcomBundle\Handler\ModalWindow;
 use Everlution\AjaxcomBundle\Handler\ReplaceClass;
 use Everlution\AjaxcomBundle\Handler\ReplaceJavaScripts;
 use Everlution\AjaxcomBundle\Handler\ReplaceMetaTags;
@@ -31,8 +30,6 @@ class Ajaxcom
 
     /** @var Handler */
     private $handler;
-    /** @var ModalWindow */
-    private $modalWindow;
     /** @var ReplaceJavaScripts */
     private $replaceJavaScripts;
     /** @var ReplaceStyleSheets */
@@ -56,7 +53,6 @@ class Ajaxcom
 
     public function __construct(
         Handler $handler,
-        ModalWindow $modalWindow,
         ReplaceJavaScripts $replaceJavaScripts,
         ReplaceStyleSheets $replaceStyleSheets,
         ReplaceMetaTags $replaceMetaTags,
@@ -69,7 +65,6 @@ class Ajaxcom
         ReplaceClass $replaceClass
     ) {
         $this->handler = $handler;
-        $this->modalWindow = $modalWindow;
         $this->replaceJavaScripts = $replaceJavaScripts;
         $this->replaceStyleSheets = $replaceStyleSheets;
         $this->replaceMetaTags = $replaceMetaTags;
@@ -86,14 +81,6 @@ class Ajaxcom
     {
         $ajax = $this->handler;
 
-        $ajax = $this->modalWindow->closeAllModalWindows($ajax);
-        if ($this->modalWindow->isModal()) {
-            $ajax = $this->modalWindow->handle($ajax, $view, $parameters);
-
-            return new JsonResponse($ajax->respond(), JsonResponse::HTTP_OK, self::AJAX_COM_CACHE_CONTROL);
-        }
-
-        $ajax = $this->replaceJavaScripts->handle($ajax, $view, $parameters);
         $ajax = $this->replaceStyleSheets->handle($ajax, $view, $parameters);
         $ajax = $this->replaceMetaTags->handle($ajax, $view, $parameters);
         $ajax = $this->replaceTitle->handle($ajax, $view, $parameters);
@@ -124,13 +111,6 @@ class Ajaxcom
     public function addCallback(AjaxCallback $callback): self
     {
         $this->callbacks->add($callback);
-
-        return $this;
-    }
-
-    public function renderAsModal(): self
-    {
-        $this->modalWindow->renderAsModal();
 
         return $this;
     }

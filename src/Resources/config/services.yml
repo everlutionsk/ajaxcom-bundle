@@ -2,8 +2,7 @@ services:
     ajaxcom.handler:
         class: Everlution\AjaxcomBundle\Service\Ajaxcom
         arguments:
-            - '@dm.ajaxcom'
-            - "@ajaxcom.handler.modal_window"
+            - '@everlution.ajaxcom'
             - "@ajaxcom.handler.replace_java_scripts"
             - "@ajaxcom.handler.replace_style_sheets"
             - "@ajaxcom.handler.replace_meta_tags"
@@ -15,8 +14,8 @@ services:
             - "@ajaxcom.handler.change_url"
             - "@ajaxcom.handler.replace_class"
 
-    dm.ajaxcom:
-        class: DM\AjaxCom\Handler
+    everlution.ajaxcom:
+        class: Everlution\Ajaxcom\Handler
         public: false
 
     ajaxcom.render_block:
@@ -53,12 +52,6 @@ services:
             - "@session"
             - "%everlution.ajaxcom.flash_template%"
             - "%everlution.ajaxcom.flash_block_id%"
-
-    ajaxcom.handler.modal_window:
-        class: Everlution\AjaxcomBundle\Handler\ModalWindow
-        public: false
-        arguments:
-            - "@twig"
 
     ajaxcom.handler.remove_blocks:
         class: Everlution\AjaxcomBundle\Handler\RemoveBlocks
