@@ -34,23 +34,13 @@ class AppKernel extends Kernel
 
 ### Step 3: Include Ajaxcom library JavasSript within your TWIG layout
 
+Install `@everlutionsk/ajaxcom-js` via `npm` and include `ajaxcom.min.js` to your TWIG layout:
+
 ```twig
-{% javascripts '../vendor/dm/ajaxcom/src/DM/AjaxCom/Resources/public/js/ajaxcom.js' %}
-<script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}
+<script type="text/javascript" src="{{ asset('build/ajaxcom.min.js') }}"></script>
 ```
 
-The last thing you need to do is provide some JavaScript handler within your TWIG layout:
-
-```javascript
-<script>
-    $(document).ajaxcom("[data-ajaxcom]", {
-        beforeSend : function(xhr, settings, options) { /* provide your callback for instance spinner.start() to indicate loading of Ajax request */ },
-        success: function() {  },
-        complete: function() { /* provide your callback for instance some callbacks which should be called after each request + spinner.stop() */ }
-    });
-</script>
-```
+The last thing you need to do is provide some JavaScript handler within your TWIG layout - please follow `@everlutionsk/ajaxcom-js` [documentation](https://github.com/everlutionsk/ajaxcom-js).
 
 ## Configuration
 
@@ -188,10 +178,6 @@ var Table = function() {
 };
 ```
 
-### `renderModal()`
-
-When you invoke this function within the action of your controller, the response will be rendered as a modal window.
-
 ### `replaceClass()`
 
 You can easily replace class in any DOM object you want by invoking `replaceClass()` with two arguments - first is CSS selector of your choice and second is class which you want to replace current one with.
@@ -278,6 +264,4 @@ When you decide to set up your layout manually following sections will help you 
 
 # TODO
 
-- add example for rendering modal
-- add twig templates for rendering modal
 - add complex usage example
