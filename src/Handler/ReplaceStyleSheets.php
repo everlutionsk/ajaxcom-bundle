@@ -28,7 +28,7 @@ class ReplaceStyleSheets
 
     public function handle(Handler $ajax, string $view, array $parameters = []): Handler
     {
-        $ajax->container(sprintf('style:not(.%s, [nonce])', $this->persistentClass))->remove();
+        $ajax->container(sprintf('style:not(.%s):not([nonce])', $this->persistentClass))->remove();
 
         try {
             $styleSheets = $this->renderBlock->render($view, 'stylesheets', $parameters);

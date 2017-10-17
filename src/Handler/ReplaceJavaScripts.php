@@ -28,7 +28,7 @@ class ReplaceJavaScripts
 
     public function handle(Handler $ajax, string $view, array $parameters = []): Handler
     {
-        $ajax->container(sprintf('script:not(.%s, [nonce])', $this->persistentClass))->remove();
+        $ajax->container(sprintf('script:not(.%s):not([nonce])', $this->persistentClass))->remove();
 
         try {
             $javaScripts = $this->renderBlock->render($view, 'javascripts', $parameters);
