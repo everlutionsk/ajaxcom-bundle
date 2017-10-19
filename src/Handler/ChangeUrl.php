@@ -32,7 +32,7 @@ class ChangeUrl
         $ajax->changeUrl(
             $this->router->generate(
                 $this->request->attributes->get('_route'),
-                $this->request->attributes->get('_route_params')
+                array_merge($this->request->attributes->get('_route_params'), $this->request->query->all())
             )
         );
 
