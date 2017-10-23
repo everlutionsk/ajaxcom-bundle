@@ -19,8 +19,6 @@ class Callbacks
 
     /** @var Session */
     private $session;
-    /** @var AjaxCallback[] */
-    private $callbacks = [];
 
     public function __construct(Session $session)
     {
@@ -29,10 +27,15 @@ class Callbacks
 
     public function handle(Handler $ajax): Handler
     {
-        uasort($this->callbacks, [$this, 'sortByPriority']);
-        foreach ($this->callbacks as $callback) {
+        /** @var AjaxCallback[] $callbacks */
+        $callbacks = $this->session->get(self::SESSION_KEY, []);
+        uasort($callbacks, [$this, 'sortByPriority']);
+
+        foreach ($callbacks as $callback) {
             $ajax->callback($callback->getFunction(), $callback->getParameters());
         }
+
+        $this->session->remove(self::SESSION_KEY);
 
         return $ajax;
     }
