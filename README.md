@@ -231,6 +231,49 @@ class CustomForm extends AbstractType {
 }
 ```
 
+# Reusing data sources
+
+In order to reuse data source between for instance multiple tabs you can easily create Twig functions by extending our `BaseDataSource`.
+
+Simply add to your services.yml following statement:
+
+```yaml
+    AppBundle\DataProvider\:
+        resource: '../../src/AppBundle/DataProvider'
+        tags: ['twig.extension']
+```
+
+You can specify any folder within your project you want. In this example we have chosen `AppBundle\DataProvider` namespace.
+
+Each class within this namespace which extends `Everlution\AjaxcomBundle\DataSource\BaseDataSource` is scanned for public methods with suffix `Provider` via reflexion and we are creating the simple Twig functions from these methods. Let's see the example:
+
+
+```php
+// AppBundle\DataProvider\Example.php
+
+// simple function which returns static array
+public function navigationProvider() {
+    return [ 
+        // some data... 
+    ];
+}
+
+// you can use parametrical functions and injected services as well
+public function userProfileProvider(int $id) {
+    return $this->someService->getData($id);
+}
+```
+
+After creating such class you can simply call the function within twig:
+
+```twig
+{{ dump(navigation()); }} {# will dump static array #}
+
+{% for item in userProfile(2) %}
+   {{ dump(item) }}
+{% endfor %}
+```
+
 # Best practice
 
 If you want to use AjaxcomBundle seamlessly you should copy `@EverlutionAjaxcom\layout_bootstrap_4.html.twig` to your project (eg. AppBundle) and modify it to your needs.
