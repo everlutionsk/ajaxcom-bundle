@@ -1,6 +1,7 @@
 services:
     ajaxcom.handler:
         class: Everlution\AjaxcomBundle\Service\Ajaxcom
+        public: true
         arguments:
             - '@everlution.ajaxcom'
             - "@ajaxcom.handler.replace_java_scripts"
