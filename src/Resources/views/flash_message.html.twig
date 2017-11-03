@@ -5,7 +5,7 @@
     <div class="col-md-12 md-margin-bottom-40">
         {% for type, messages in flashes %}
             {% for message in messages %}
-                {% include "EverlutionAjaxcomBundle::dismissible_message.html.twig" with {type: type, message: message|trans} %}
+                {% include "@EverlutionAjaxcom/dismissible_message.html.twig" with {type: type, message: message|trans} %}
             {% endfor %}
         {% endfor %}
     </div>
