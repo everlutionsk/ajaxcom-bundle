@@ -32,7 +32,7 @@ class ReplaceMetaTags
 
         try {
             $metaTags = $this->renderBlock->render($view, 'metatags', $parameters);
-            $ajax->container('meta:last-of-type')->append($metaTags);
+            $ajax->container('meta:last-of-type')->insertAfter($metaTags);
         } catch (AjaxcomException $exception) {
             // do nothing
         } finally {

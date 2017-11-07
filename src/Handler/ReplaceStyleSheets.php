@@ -32,7 +32,7 @@ class ReplaceStyleSheets
 
         try {
             $styleSheets = $this->renderBlock->render($view, 'stylesheets', $parameters);
-            $ajax->container('style:last-of-type')->append($styleSheets);
+            $ajax->container('style:last-of-type')->insertAfter($styleSheets);
         } catch (AjaxcomException $exception) {
             // do nothing
         } finally {

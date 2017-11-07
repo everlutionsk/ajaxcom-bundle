@@ -178,6 +178,27 @@ var Table = function() {
 };
 ```
 
+#### You don't need necessarily use this function
+
+You don't actually need to use this function if you would write your JavaScript in a following way:
+
+```javascript
+// additional.js
+var App = {
+    additional: function () {
+        // some additional functionality
+        console.log('executing App.additional');
+    },
+    // more functions within App namespace
+}
+
+App.additional();
+```
+
+The `App.additional()` will be executed every time the browser downloads `additional.js` file - no matter if the request is being handled with or without Ajaxcom. You just need to make sure that you are adding the `<script src="additional.js"></script>` to your DOM via Ajaxcom where it is needed.
+
+The AjaxcomBundle will add all scripts within `javascripts` block to your page automatically (they will be inserted after the last `<script>` within your code).
+
 ### `replaceClass()`
 
 You can easily replace class in any DOM object you want by invoking `replaceClass()` with two arguments - first is CSS selector of your choice and second is class which you want to replace current one with.

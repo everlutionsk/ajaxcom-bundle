@@ -32,7 +32,7 @@ class ReplaceJavaScripts
 
         try {
             $javaScripts = $this->renderBlock->render($view, 'javascripts', $parameters);
-            $ajax->container('script:last-of-type')->append($javaScripts);
+            $ajax->container('script:last-of-type')->insertAfter($javaScripts);
         } catch (AjaxcomException $exception) {
             // do nothing
         } finally {

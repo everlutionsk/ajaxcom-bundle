@@ -88,6 +88,7 @@ class Ajaxcom
         $ajax = $this->removeBlocks->handle($ajax);
         $ajax = $this->addBlocks->handle($ajax, $view, $parameters);
         $ajax = $this->replaceClass->handle($ajax);
+        $ajax = $this->replaceJavaScripts->handle($ajax, $view, $parameters);
         $ajax = $this->callbacks->handle($ajax);
         $ajax = $this->changeUrl->handle($ajax);
 
