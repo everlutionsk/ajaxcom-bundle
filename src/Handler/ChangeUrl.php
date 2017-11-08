@@ -31,14 +31,16 @@ class ChangeUrl
 
     public function handle(Handler $ajax): Handler
     {
-        if ($this->changeUrl) {
-            $ajax->changeUrl(
-                $this->router->generate(
-                    $this->request->attributes->get('_route'),
-                    array_merge($this->request->attributes->get('_route_params'), $this->request->query->all())
-                )
-            );
+        if (false === $this->changeUrl) {
+            return $ajax;
         }
+
+        $ajax->changeUrl(
+            $this->router->generate(
+                $this->request->attributes->get('_route'),
+                array_merge($this->request->attributes->get('_route_params'), $this->request->query->all())
+            )
+        );
 
         return $ajax;
     }

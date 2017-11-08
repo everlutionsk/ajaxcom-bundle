@@ -122,4 +122,11 @@ class Ajaxcom
 
         return $this;
     }
+
+    public function doNotChangeUrl(): self
+    {
+        $this->changeUrl->doNotChangeUrl();
+
+        return $this;
+    }
 }
