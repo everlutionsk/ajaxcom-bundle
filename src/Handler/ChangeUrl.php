@@ -20,6 +20,8 @@ class ChangeUrl
     private $request;
     /** @var UrlGeneratorInterface */
     private $router;
+    /** @var bool */
+    private $changeUrl = true;
 
     public function __construct(RequestStack $requestStack, UrlGeneratorInterface $router)
     {
@@ -29,6 +31,10 @@ class ChangeUrl
 
     public function handle(Handler $ajax): Handler
     {
+        if (false === $this->changeUrl) {
+            return $ajax;
+        }
+
         $ajax->changeUrl(
             $this->router->generate(
                 $this->request->attributes->get('_route'),
@@ -37,5 +43,12 @@ class ChangeUrl
         );
 
         return $ajax;
+    }
+
+    public function doNotChangeUrl(): self
+    {
+        $this->changeUrl = false;
+
+        return $this;
     }
 }

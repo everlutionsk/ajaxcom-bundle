@@ -17,7 +17,7 @@ services:
 
     everlution.ajaxcom:
         class: Everlution\Ajaxcom\Handler
-        public: false
+        public: true
 
     ajaxcom.render_block:
         class: Everlution\AjaxcomBundle\Service\RenderBlock

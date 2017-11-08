@@ -116,9 +116,16 @@ class Ajaxcom
         return $this;
     }
 
-    public function replaceClass(string $selector, string $class)
+    public function replaceClass(string $selector, string $class): self
     {
         $this->replaceClass->add($selector, $class);
+
+        return $this;
+    }
+
+    public function doNotChangeUrl(): self
+    {
+        $this->changeUrl->doNotChangeUrl();
 
         return $this;
     }
