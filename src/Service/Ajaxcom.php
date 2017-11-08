@@ -50,8 +50,6 @@ class Ajaxcom
     private $changeUrl;
     /** @var ReplaceClass */
     private $replaceClass;
-    /** @var bool */
-    private $doNotChangeUrl = false;
 
     public function __construct(
         Handler $handler,
@@ -92,10 +90,7 @@ class Ajaxcom
         $ajax = $this->replaceClass->handle($ajax);
         $ajax = $this->replaceJavaScripts->handle($ajax, $view, $parameters);
         $ajax = $this->callbacks->handle($ajax);
-
-        if (false === $this->doNotChangeUrl) {
-            $ajax = $this->changeUrl->handle($ajax);
-        }
+        $ajax = $this->changeUrl->handle($ajax);
 
         return new JsonResponse($ajax->respond(), JsonResponse::HTTP_OK, self::AJAX_COM_CACHE_CONTROL);
     }
@@ -124,13 +119,6 @@ class Ajaxcom
     public function replaceClass(string $selector, string $class): self
     {
         $this->replaceClass->add($selector, $class);
-
-        return $this;
-    }
-
-    public function doNotChangeUrl(): self
-    {
-        $this->doNotChangeUrl = true;
 
         return $this;
     }

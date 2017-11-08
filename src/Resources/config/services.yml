@@ -40,7 +40,7 @@ services:
 
     ajaxcom.handler.change_url:
         class: Everlution\AjaxcomBundle\Handler\ChangeUrl
-        public: false
+        public: true
         arguments:
             - "@request_stack"
             - "@router.default"

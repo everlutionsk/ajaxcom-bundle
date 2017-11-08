@@ -56,7 +56,7 @@ trait AjaxcomTrait
 
     protected function doNotChangeUrl(): self
     {
-        $this->get('ajaxcom.handler')->doNotChangeUrl();
+        $this->get('ajaxcom.handler.change_url')->doNotChangeUrl();
 
         return $this;
     }
