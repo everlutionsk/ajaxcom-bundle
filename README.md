@@ -203,6 +203,10 @@ The AjaxcomBundle will add all scripts within `javascripts` block to your page a
 
 You can easily replace class in any DOM object you want by invoking `replaceClass()` with two arguments - first is CSS selector of your choice and second is class which you want to replace current one with.
 
+### `doNotChangeUrl()`
+
+You can easily avoid replacing url of the target page by invoking `doNotChangeUrl()`.
+
 ### Flash messages
 
 The flash messages are automatically handled by Ajaxcom bundle. When the request is called via Ajax the flashes which are in the session bag are rendered automatically.
