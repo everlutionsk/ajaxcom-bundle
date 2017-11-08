@@ -53,4 +53,11 @@ trait AjaxcomTrait
 
         return $this;
     }
+
+    protected function doNotChangeUrl(): self
+    {
+        $this->get('ajaxcom.handler')->doNotChangeUrl();
+
+        return $this;
+    }
 }
