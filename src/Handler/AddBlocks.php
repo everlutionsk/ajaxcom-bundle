@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Everlution\AjaxcomBundle\Handler;
 
 use Everlution\Ajaxcom\Handler;
-use Everlution\AjaxcomBundle\DataObject\Block;
 use Everlution\AjaxcomBundle\AjaxcomException;
+use Everlution\AjaxcomBundle\DataObject\Block;
 use Everlution\AjaxcomBundle\Service\RenderBlock;
 
 /**
@@ -36,7 +36,7 @@ class AddBlocks
     {
         foreach ($this->getBlocks() as $block) {
             try {
-                $html = $this->renderBlock->render($view, $block->getId(), $parameters);
+                $html = $this->renderBlock->render($view, str_replace('-', '_', $block->getId()), $parameters);
                 $ajax->container(sprintf('#%s', $block->getId()))->html($html);
             } catch (AjaxcomException $exception) {
                 continue;

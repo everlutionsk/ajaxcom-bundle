@@ -61,13 +61,13 @@ The bundle works best with Bootstrap 3+ CSS framework.
 
 Extend your controller from `Everlution\AjaxcomBundle\Controller\Controller` or use `Everlution\AjaxcomBundle\Controller\AjaxcomTrait` trait with your controller to obtain Ajaxcom functionality.
 
-Every link which you want to call via Ajaxcom must contain `data-ajaxcom` attribute. You can change this behaviour in JavaScript Ajaxcom handler.
+By default `ajaxcom-js` library will handle all link clicks except one with `target="_blank"` and all form submissions. If you need to change selector or you want to have some control over which links are handled by `ajaxcom-js` and which aren't you can override the default selectors within `ajaxcom-js` initialization. Please see the `@everlutionsk/ajaxcom-js` [documentation](https://github.com/everlutionsk/ajaxcom-js).
 
 Example:
 
 ```twig
-<a href="{{ path('homepage') }}">Homepage</a> <!-- won't be handled by Ajaxcom -->
-<a href="{{ path('remove_user') }}" data-ajaxcom>Remove user</a> <!-- will be handled by Ajaxcom -->
+<a href="https://www.google.com">External link</a> <!-- won't be handled by Ajaxcom -->
+<a href="{{ path('remove_user') }}">Remove user</a> <!-- will be handled by Ajaxcom -->
 ```
 
 The following methods can be combined - eg. you can render multiple blocks and remove multiple blocks and add as many JavaScript callbacks within one request as you wish.
@@ -88,6 +88,8 @@ In order to dynamically render only one block on page you need to fit following 
 
 1. the block which you want to render is enclosed within twig `block`
 2. the twig `block` is enclosed within DOM element with `ID` which has same name as the block
+
+By default the TWIG does not support hyphens in block names so if you need to use hyphens within your ID's we are automatically convert hyphens to underscores for you. Hence you can use hyphens within your ID's with combination of the same name for TWIG block - you just need to replace hyphens with underscores. Example: `id='custom-block'` and `{% block custom_block %}` will be automatically matched by AjaxcomBundle.
 
 #### Example:
 
@@ -231,30 +233,7 @@ $this->addFlash(Everlution\AjaxcomBundle\Flash::SUCCESS, 'Your request has been 
 
 ### Sending forms through Ajaxcom
 
-You can simply extend `EverlutionAjaxcom\Form\Type\AjaxcomForm`. In `configureOptions()` then call parent method as follows:
-
-```php
-class CustomForm extends AjaxcomForm {
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        parent::configureOptions($resolver);
-        
-        // configure your options
-        $resolver->setDefaults(['data_class' => YourDataClass::class]);
-    }
-}
-```
-
-Or you can add attribute `data-ajaxcom` to your form manually:
-
-```php
-class CustomForm extends AbstractType {
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(['attr' => ['data-ajaxcom' => '']]);
-    }
-}
-```
+All forms are by default handled by `ajaxcom-js`. You can change this behaviour by overriding the default forms selector while initializing `ajaxcom-js`. Please follow `@everlutionsk/ajaxcom-js` [documentation](https://github.com/everlutionsk/ajaxcom-js).
 
 # Reusing data sources
 
