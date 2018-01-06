@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 trait AjaxcomTrait
 {
-    public function render($view, array $parameters = array(), Response $response = null)
+    public function render($view, array $parameters = array(), Response $response = null): Response
     {
         $request = $this->get('request_stack')->getMasterRequest();
 
