@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Everlution\AjaxcomBundle\Handler;
+namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
 use Everlution\AjaxcomBundle\AjaxcomException;
@@ -14,8 +14,10 @@ use Everlution\AjaxcomBundle\Service\RenderBlock;
  *
  * @author Ivan Barlog <ivan.barlog@everlution.sk>
  */
-class AddBlocks
+class AddBlocks implements MutatorInterface, RenderableInterface
 {
+    use RenderableTrait;
+
     /** @var RenderBlock */
     private $renderBlock;
     /** @var Block[] */
@@ -32,11 +34,12 @@ class AddBlocks
         }
     }
 
-    public function handle(Handler $ajax, string $view, array $parameters = []): Handler
+    public function mutate(Handler $ajax): Handler
     {
         foreach ($this->getBlocks() as $block) {
             try {
-                $html = $this->renderBlock->render($view, str_replace('-', '_', $block->getId()), $parameters);
+                $blockId = str_replace('-', '_', $block->getId());
+                $html = $this->renderBlock->render($this->view, $blockId, $this->parameters);
                 $ajax->container(sprintf('#%s', $block->getId()))->html($html);
             } catch (AjaxcomException $exception) {
                 continue;

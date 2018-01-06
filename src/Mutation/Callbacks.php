@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Everlution\AjaxcomBundle\Handler;
+namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
 use Everlution\AjaxcomBundle\DataObject\Callback as AjaxCallback;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
  *
  * @author Ivan Barlog <ivan.barlog@everlution.sk>
  */
-class Callbacks
+class Callbacks implements MutatorInterface
 {
     const SESSION_KEY = 'ajaxcom/callbacks';
 
@@ -25,7 +25,7 @@ class Callbacks
         $this->session = $session;
     }
 
-    public function handle(Handler $ajax): Handler
+    public function mutate(Handler $ajax): Handler
     {
         /** @var AjaxCallback[] $callbacks */
         $callbacks = $this->session->get(self::SESSION_KEY, []);

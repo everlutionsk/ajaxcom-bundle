@@ -1,5 +1,8 @@
 # Everlution AjaxcomBundle
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/everlutionsk/ajaxcom-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/everlutionsk/ajaxcom-bundle/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/everlutionsk/ajaxcom-bundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/everlutionsk/ajaxcom-bundle/build-status/master)
+
 ## Installation
 
 ### Step 1: Download the Bundle

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Everlution\AjaxcomBundle\Handler;
+namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
 use Everlution\AjaxcomBundle\AjaxcomException;
@@ -13,8 +13,10 @@ use Everlution\AjaxcomBundle\Service\RenderBlock;
  *
  * @author Ivan Barlog <ivan.barlog@everlution.sk>
  */
-class ReplaceJavaScripts
+class ReplaceJavaScripts implements MutatorInterface, RenderableInterface
 {
+    use RenderableTrait;
+
     /** @var RenderBlock */
     private $renderBlock;
     /** @var string */
@@ -26,12 +28,12 @@ class ReplaceJavaScripts
         $this->persistentClass = $persistentClass;
     }
 
-    public function handle(Handler $ajax, string $view, array $parameters = []): Handler
+    public function mutate(Handler $ajax): Handler
     {
         $ajax->container(sprintf('script:not(.%s):not([nonce])', $this->persistentClass))->remove();
 
         try {
-            $javaScripts = $this->renderBlock->render($view, 'javascripts', $parameters);
+            $javaScripts = $this->renderBlock->render($this->view, 'javascripts', $this->parameters);
             $ajax->container('script:last-of-type')->insertAfter($javaScripts);
         } catch (AjaxcomException $exception) {
             // do nothing

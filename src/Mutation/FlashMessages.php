@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Everlution\AjaxcomBundle\Handler;
+namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
 use Everlution\AjaxcomBundle\AjaxcomException;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
  *
  * @author Ivan Barlog <ivan.barlog@everlution.sk>
  */
-class FlashMessages
+class FlashMessages implements MutatorInterface
 {
     /** @var RenderBlock */
     private $renderBlock;
@@ -33,7 +33,7 @@ class FlashMessages
         $this->flashesBlockId = $flashesBlockId;
     }
 
-    public function handle(Handler $ajax): Handler
+    public function mutate(Handler $ajax): Handler
     {
         $flashBag = $this->session->getFlashBag();
 

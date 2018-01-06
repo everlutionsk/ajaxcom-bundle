@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Everlution\AjaxcomBundle\Handler;
+namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
 
@@ -11,12 +11,12 @@ use Everlution\Ajaxcom\Handler;
  *
  * @author Ivan Barlog <ivan.barlog@everlution.sk>
  */
-class RemoveBlocks
+class RemoveBlocks implements MutatorInterface
 {
     /** @var string[] */
     private $removeBlocks = [];
 
-    public function handle(Handler $ajax): Handler
+    public function mutate(Handler $ajax): Handler
     {
         foreach ($this->removeBlocks as $selector) {
             $ajax->container($selector)->remove();

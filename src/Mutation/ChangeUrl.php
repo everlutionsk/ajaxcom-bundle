@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Everlution\AjaxcomBundle\Handler;
+namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @author Ivan Barlog <ivan.barlog@everlution.sk>
  */
-class ChangeUrl
+class ChangeUrl implements MutatorInterface
 {
     /** @var Request */
     private $request;
@@ -29,7 +29,7 @@ class ChangeUrl
         $this->request = $requestStack->getMasterRequest();
     }
 
-    public function handle(Handler $ajax): Handler
+    public function mutate(Handler $ajax): Handler
     {
         if (false === $this->changeUrl) {
             return $ajax;

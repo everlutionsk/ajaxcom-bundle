@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Everlution\AjaxcomBundle\Handler;
+namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
 
@@ -11,11 +11,11 @@ use Everlution\Ajaxcom\Handler;
  *
  * @author Ivan Barlog <ivan.barlog@everlution.sk>
  */
-class ReplaceClass
+class ReplaceClass implements MutatorInterface
 {
     private $selectors = [];
 
-    public function handle(Handler $ajax): Handler
+    public function mutate(Handler $ajax): Handler
     {
         foreach ($this->selectors as $selector => $class) {
             $ajax->container($selector)->attr('class', $class);

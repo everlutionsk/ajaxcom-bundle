@@ -2,19 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Everlution\AjaxcomBundle\Handler;
+namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
 use Everlution\AjaxcomBundle\AjaxcomException;
 use Everlution\AjaxcomBundle\Service\RenderBlock;
 
 /**
- * Class ReplaceMetaTags.
+ * Class ReplaceStyleSheets.
  *
  * @author Ivan Barlog <ivan.barlog@everlution.sk>
  */
-class ReplaceMetaTags
+class ReplaceStyleSheets implements MutatorInterface, RenderableInterface
 {
+    use RenderableTrait;
+
     /** @var RenderBlock */
     private $renderBlock;
     /** @var string */
@@ -26,13 +28,13 @@ class ReplaceMetaTags
         $this->persistentClass = $persistentClass;
     }
 
-    public function handle(Handler $ajax, string $view, array $parameters = []): Handler
+    public function mutate(Handler $ajax): Handler
     {
-        $ajax->container(sprintf('meta:not(.%s)', $this->persistentClass))->remove();
+        $ajax->container(sprintf('style:not(.%s):not([nonce])', $this->persistentClass))->remove();
 
         try {
-            $metaTags = $this->renderBlock->render($view, 'metatags', $parameters);
-            $ajax->container('meta:last-of-type')->insertAfter($metaTags);
+            $styleSheets = $this->renderBlock->render($this->view, 'stylesheets', $this->parameters);
+            $ajax->container('style:last-of-type')->insertAfter($styleSheets);
         } catch (AjaxcomException $exception) {
             // do nothing
         } finally {

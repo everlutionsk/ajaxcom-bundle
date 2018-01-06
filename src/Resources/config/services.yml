@@ -4,16 +4,7 @@ services:
         public: true
         arguments:
             - '@everlution.ajaxcom'
-            - "@ajaxcom.handler.replace_java_scripts"
-            - "@ajaxcom.handler.replace_style_sheets"
-            - "@ajaxcom.handler.replace_meta_tags"
-            - "@ajaxcom.handler.replace_title"
-            - "@ajaxcom.handler.flash_messages"
-            - "@ajaxcom.handler.remove_blocks"
-            - "@ajaxcom.handler.add_blocks"
-            - "@ajaxcom.handler.callbacks"
-            - "@ajaxcom.handler.change_url"
-            - "@ajaxcom.handler.replace_class"
+            - '@ajaxcom.mutation.containe'
 
     everlution.ajaxcom:
         class: Everlution\Ajaxcom\Handler
@@ -23,70 +14,86 @@ services:
         class: Everlution\AjaxcomBundle\Service\RenderBlock
         public: false
         arguments:
-            - "@twig"
+            - '@twig'
 
-    ajaxcom.handler.add_blocks:
-        class: Everlution\AjaxcomBundle\Handler\AddBlocks
+    # mutations
+    ajaxcom.mutation.containe:
+        class: Everlution\AjaxcomBundle\Mutation\Container
+        # the order of following call is important
+        calls:
+            - ['add', ['@ajaxcom.mutation.replace_style_sheets']]
+            - ['add', ['@ajaxcom.mutation.replace_meta_tags']]
+            - ['add', ['@ajaxcom.mutation.replace_title']]
+            - ['add', ['@ajaxcom.mutation.flash_messages']]
+            - ['add', ['@ajaxcom.mutation.remove_blocks']]
+            - ['add', ['@ajaxcom.mutation.add_blocks']]
+            - ['add', ['@ajaxcom.mutation.replace_class']]
+            - ['add', ['@ajaxcom.mutation.replace_java_scripts']]
+            - ['add', ['@ajaxcom.mutation.callbacks']]
+            - ['add', ['@ajaxcom.mutation.change_url']]
+
+    ajaxcom.mutation.add_blocks:
+        class: Everlution\AjaxcomBundle\Mutation\AddBlocks
+        public: true
+        arguments:
+            - '@ajaxcom.render_block'
+            - '%everlution.ajaxcom.blocks_to_render%'
+
+    ajaxcom.mutation.remove_blocks:
+        class: Everlution\AjaxcomBundle\Mutation\RemoveBlocks
+        public: true
+
+    ajaxcom.mutation.callbacks:
+        class: Everlution\AjaxcomBundle\Mutation\Callbacks
+        public: true
+        arguments:
+            - '@session'
+
+    ajaxcom.mutation.replace_class:
+        class: Everlution\AjaxcomBundle\Mutation\ReplaceClass
+        public: true
+        arguments:
+            - '@ajaxcom.render_block'
+
+    ajaxcom.mutation.change_url:
+        class: Everlution\AjaxcomBundle\Mutation\ChangeUrl
+        public: true
+        arguments:
+            - '@request_stack'
+            - '@router.default'
+
+    ajaxcom.mutation.flash_messages:
+        class: Everlution\AjaxcomBundle\Mutation\FlashMessages
         public: false
         arguments:
-            - "@ajaxcom.render_block"
-            - "%everlution.ajaxcom.blocks_to_render%"
+            - '@ajaxcom.render_block'
+            - '@session'
+            - '%everlution.ajaxcom.flash_template%'
+            - '%everlution.ajaxcom.flash_block_id%'
 
-    ajaxcom.handler.callbacks:
-        class: Everlution\AjaxcomBundle\Handler\Callbacks
+    ajaxcom.mutation.replace_java_scripts:
+        class: Everlution\AjaxcomBundle\Mutation\ReplaceJavaScripts
         public: false
         arguments:
-            - "@session"
+            - '@ajaxcom.render_block'
+            - '%everlution.ajaxcom.persistent_class%'
 
-    ajaxcom.handler.change_url:
-        class: Everlution\AjaxcomBundle\Handler\ChangeUrl
+    ajaxcom.mutation.replace_meta_tags:
+        class: Everlution\AjaxcomBundle\Mutation\ReplaceMetaTags
         public: false
         arguments:
-            - "@request_stack"
-            - "@router.default"
+            - '@ajaxcom.render_block'
+            - '%everlution.ajaxcom.persistent_class%'
 
-    ajaxcom.handler.flash_messages:
-        class: Everlution\AjaxcomBundle\Handler\FlashMessages
+    ajaxcom.mutation.replace_style_sheets:
+        class: Everlution\AjaxcomBundle\Mutation\ReplaceStyleSheets
         public: false
         arguments:
-            - "@ajaxcom.render_block"
-            - "@session"
-            - "%everlution.ajaxcom.flash_template%"
-            - "%everlution.ajaxcom.flash_block_id%"
+            - '@ajaxcom.render_block'
+            - '%everlution.ajaxcom.persistent_class%'
 
-    ajaxcom.handler.remove_blocks:
-        class: Everlution\AjaxcomBundle\Handler\RemoveBlocks
-        public: false
-
-    ajaxcom.handler.replace_java_scripts:
-        class: Everlution\AjaxcomBundle\Handler\ReplaceJavaScripts
+    ajaxcom.mutation.replace_title:
+        class: Everlution\AjaxcomBundle\Mutation\ReplaceTitle
         public: false
         arguments:
-            - "@ajaxcom.render_block"
-            - "%everlution.ajaxcom.persistent_class%"
-
-    ajaxcom.handler.replace_meta_tags:
-        class: Everlution\AjaxcomBundle\Handler\ReplaceMetaTags
-        public: false
-        arguments:
-            - "@ajaxcom.render_block"
-            - "%everlution.ajaxcom.persistent_class%"
-
-    ajaxcom.handler.replace_style_sheets:
-        class: Everlution\AjaxcomBundle\Handler\ReplaceStyleSheets
-        public: false
-        arguments:
-            - "@ajaxcom.render_block"
-            - "%everlution.ajaxcom.persistent_class%"
-
-    ajaxcom.handler.replace_title:
-        class: Everlution\AjaxcomBundle\Handler\ReplaceTitle
-        public: false
-        arguments:
-            - "@ajaxcom.render_block"
-
-    ajaxcom.handler.replace_class:
-        class: Everlution\AjaxcomBundle\Handler\ReplaceClass
-        public: false
-        arguments:
-            - "@ajaxcom.render_block"
+            - '@ajaxcom.render_block'

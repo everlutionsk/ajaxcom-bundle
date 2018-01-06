@@ -5,17 +5,10 @@ declare(strict_types=1);
 namespace Everlution\AjaxcomBundle\Service;
 
 use Everlution\Ajaxcom\Handler;
-use Everlution\AjaxcomBundle\Handler\AddBlocks;
-use Everlution\AjaxcomBundle\Handler\Callbacks;
-use Everlution\AjaxcomBundle\Handler\ChangeUrl;
-use Everlution\AjaxcomBundle\Handler\FlashMessages;
-use Everlution\AjaxcomBundle\Handler\ReplaceClass;
-use Everlution\AjaxcomBundle\Handler\ReplaceJavaScripts;
-use Everlution\AjaxcomBundle\Handler\ReplaceMetaTags;
-use Everlution\AjaxcomBundle\Handler\ReplaceStyleSheets;
-use Everlution\AjaxcomBundle\Handler\ReplaceTitle;
-use Everlution\AjaxcomBundle\Handler\RemoveBlocks;
 use Everlution\AjaxcomBundle\DataObject\Callback as AjaxCallback;
+use Everlution\AjaxcomBundle\Mutation\MutatorInterface;
+use Everlution\AjaxcomBundle\Mutation\RenderableInterface;
+use Everlution\AjaxcomBundle\Mutation\Container;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -30,69 +23,28 @@ class Ajaxcom
 
     /** @var Handler */
     private $handler;
-    /** @var ReplaceJavaScripts */
-    private $replaceJavaScripts;
-    /** @var ReplaceStyleSheets */
-    private $replaceStyleSheets;
-    /** @var ReplaceMetaTags */
-    private $replaceMetaTags;
-    /** @var ReplaceTitle */
-    private $replaceTitle;
-    /** @var FlashMessages */
-    private $flashMessages;
-    /** @var RemoveBlocks */
-    private $removeBlocks;
-    /** @var AddBlocks */
-    private $addBlocks;
-    /** @var Callbacks */
-    private $callbacks;
-    /** @var ChangeUrl */
-    private $changeUrl;
-    /** @var ReplaceClass */
-    private $replaceClass;
+    /** @var Container */
+    private $container;
 
-    public function __construct(
-        Handler $handler,
-        ReplaceJavaScripts $replaceJavaScripts,
-        ReplaceStyleSheets $replaceStyleSheets,
-        ReplaceMetaTags $replaceMetaTags,
-        ReplaceTitle $replaceTitle,
-        FlashMessages $flashMessages,
-        RemoveBlocks $removeBlocks,
-        AddBlocks $addBlocks,
-        Callbacks $callbacks,
-        ChangeUrl $changeUrl,
-        ReplaceClass $replaceClass
-    ) {
+    public function __construct(Handler $handler, Container $container)
+    {
         $this->handler = $handler;
-        $this->replaceJavaScripts = $replaceJavaScripts;
-        $this->replaceStyleSheets = $replaceStyleSheets;
-        $this->replaceMetaTags = $replaceMetaTags;
-        $this->replaceTitle = $replaceTitle;
-        $this->flashMessages = $flashMessages;
-        $this->removeBlocks = $removeBlocks;
-        $this->addBlocks = $addBlocks;
-        $this->callbacks = $callbacks;
-        $this->changeUrl = $changeUrl;
-        $this->replaceClass = $replaceClass;
+        $this->container = $container;
     }
 
     public function handle(string $view, array $parameters = []): JsonResponse
     {
-        $ajax = $this->handler;
+        /** @var MutatorInterface $mutator */
+        foreach ($this->container->getMutators() as $mutator) {
+            if ($mutator instanceof RenderableInterface) {
+                $mutator->setView($view);
+                $mutator->setParameters($parameters);
+            }
 
-        $ajax = $this->replaceStyleSheets->handle($ajax, $view, $parameters);
-        $ajax = $this->replaceMetaTags->handle($ajax, $view, $parameters);
-        $ajax = $this->replaceTitle->handle($ajax, $view, $parameters);
-        $ajax = $this->flashMessages->handle($ajax);
-        $ajax = $this->removeBlocks->handle($ajax);
-        $ajax = $this->addBlocks->handle($ajax, $view, $parameters);
-        $ajax = $this->replaceClass->handle($ajax);
-        $ajax = $this->replaceJavaScripts->handle($ajax, $view, $parameters);
-        $ajax = $this->callbacks->handle($ajax);
-        $ajax = $this->changeUrl->handle($ajax);
+            $mutator->mutate($this->handler);
+        }
 
-        return new JsonResponse($ajax->respond(), JsonResponse::HTTP_OK, self::AJAX_COM_CACHE_CONTROL);
+        return new JsonResponse($this->handler->respond(), JsonResponse::HTTP_OK, self::AJAX_COM_CACHE_CONTROL);
     }
 
     public function renderBlock(string $id): self
