@@ -60,4 +60,6 @@ trait AjaxcomTrait
 
         return $this;
     }
+
+    abstract protected function get($id);
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Everlution\AjaxcomBundle\Service;
 
 use Everlution\Ajaxcom\Handler;
-use Everlution\AjaxcomBundle\DataObject\Callback as AjaxCallback;
 use Everlution\AjaxcomBundle\Mutation\MutatorInterface;
 use Everlution\AjaxcomBundle\Mutation\RenderableInterface;
 use Everlution\AjaxcomBundle\Mutation\Container;
@@ -45,40 +44,5 @@ class Ajaxcom
         }
 
         return new JsonResponse($this->handler->respond(), JsonResponse::HTTP_OK, self::AJAX_COM_CACHE_CONTROL);
-    }
-
-    public function renderBlock(string $id): self
-    {
-        $this->addBlocks->add($id);
-
-        return $this;
-    }
-
-    public function removeBlock(string $selector): self
-    {
-        $this->removeBlocks->add($selector);
-
-        return $this;
-    }
-
-    public function addCallback(AjaxCallback $callback): self
-    {
-        $this->callbacks->add($callback);
-
-        return $this;
-    }
-
-    public function replaceClass(string $selector, string $class): self
-    {
-        $this->replaceClass->add($selector, $class);
-
-        return $this;
-    }
-
-    public function doNotChangeUrl(): self
-    {
-        $this->changeUrl->doNotChangeUrl();
-
-        return $this;
     }
 }
