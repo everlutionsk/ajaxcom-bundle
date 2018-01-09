@@ -71,7 +71,7 @@ When you want to set refresh flag from controller you need first add the block a
 
 public function exampleAction()
 {
-    $this->addBlock('example');
+    $this->addAjaxBlock('example');
     $this->refreshAjaxBlock('example');
     
     return $this->render('some/template');
