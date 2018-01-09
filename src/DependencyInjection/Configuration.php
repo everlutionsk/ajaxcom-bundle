@@ -14,6 +14,13 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    const FLASH_TEMPLATE = 'flash_template';
+    const FLASH_BLOCK_ID = 'flash_block_id';
+    const PERSISTENT_CLASS = 'persistent_class';
+    const BLOCKS_TO_RENDER = 'blocks_to_render';
+    const ID = 'id';
+    const REFRESH = 'refresh';
+
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
@@ -21,11 +28,16 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('flash_template')->defaultValue('@EverlutionAjaxcom/flash_message.html.twig')->end()
-                ->scalarNode('flash_block_id')->defaultValue('flash_message')->end()
-                ->scalarNode('persistent_class')->defaultValue('ajaxcom-persistent')->end()
-                ->arrayNode('blocks_to_render')
-                    ->prototype('scalar')->end()
+                ->scalarNode(self::FLASH_TEMPLATE)->defaultValue('@EverlutionAjaxcom/flash_message.html.twig')->end()
+                ->scalarNode(self::FLASH_BLOCK_ID)->defaultValue('flash_message')->end()
+                ->scalarNode(self::PERSISTENT_CLASS)->defaultValue('ajaxcom-persistent')->end()
+                ->arrayNode(self::BLOCKS_TO_RENDER)
+                    ->arrayPrototype()
+                        ->children()
+                            ->scalarNode(self::ID)->end()
+                            ->scalarNode(self::REFRESH)->defaultFalse()->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end();
 

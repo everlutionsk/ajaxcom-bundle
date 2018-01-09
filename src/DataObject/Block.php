@@ -13,6 +13,8 @@ class Block
 {
     /** @var string */
     private $id;
+    /** @var bool */
+    private $shouldRefresh = false;
 
     public function __construct(string $id)
     {
@@ -22,5 +24,15 @@ class Block
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function refresh(): void
+    {
+        $this->shouldRefresh = true;
+    }
+
+    public function shouldRefresh(): bool
+    {
+        return $this->shouldRefresh;
     }
 }

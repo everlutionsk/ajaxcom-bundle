@@ -29,21 +29,29 @@ class AddBlocks implements MutatorInterface, RenderableInterface
     {
         $this->renderBlock = $renderBlock;
 
-        foreach ($blocksToRender as $id) {
-            $this->defaultBlocks[] = new Block($id);
-        }
+        $this->defaultBlocks = array_map(
+            function (array $data) {
+                $block = new Block($data['id']);
+                if ($data['refresh']) {
+                    $block->refresh();
+                }
+
+                return $block;
+            },
+            $blocksToRender
+        );
     }
 
     public function mutate(Handler $ajax): Handler
     {
         foreach ($this->getBlocks() as $block) {
             try {
-                $blockId = str_replace('-', '_', $block->getId());
-                $html = $this->renderBlock->render($this->view, $blockId, $this->parameters);
-                $ajax->container(sprintf('#%s', $block->getId()))->html($html);
+                $html = $this->renderBlock->render($block, $this->view, $this->parameters);
             } catch (AjaxcomException $exception) {
                 continue;
             }
+
+            $ajax->container(sprintf('#%s', $block->getId()))->html($html);
         }
 
         return $ajax;
@@ -51,7 +59,18 @@ class AddBlocks implements MutatorInterface, RenderableInterface
 
     public function add(string $id): self
     {
-        $this->blocks[] = new Block($id);
+        $this->blocks[$id] = new Block($id);
+
+        return $this;
+    }
+
+    public function refresh(string $id): self
+    {
+        if (false === array_key_exists($id, $this->blocks)) {
+            throw new BlockDoesNotExist($id);
+        }
+
+        $this->defaultBlocks[$id]->refresh();
 
         return $this;
     }

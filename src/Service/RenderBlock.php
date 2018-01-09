@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Everlution\AjaxcomBundle\Service;
 
+use Everlution\AjaxcomBundle\DataObject\Block;
+
 /**
  * Class RenderBlock.
  *
@@ -19,18 +21,24 @@ class RenderBlock
         $this->twig = $twig;
     }
 
-    public function render(string $template, string $blockId, array $parameters = []): string
+    public function render(Block $block, string $template, array $parameters = []): string
     {
+        $blockId = $this->getNormalizedId($block);
         $template = $this->twig->load($template);
         if (false === $template->hasBlock($blockId)) {
             throw new TemplateDoesNotContainBlock();
         }
 
         $html = $template->renderBlock($blockId, $parameters);
-        if (empty($html)) {
+        if (empty($html) && false === $block->shouldRefresh()) {
             throw new BlockIsEmpty();
         }
 
         return $html;
+    }
+
+    private function getNormalizedId(Block $block): string
+    {
+        return str_replace('-', '_', $block->getId());
     }
 }

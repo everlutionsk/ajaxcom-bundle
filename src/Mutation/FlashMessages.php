@@ -6,6 +6,7 @@ namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
 use Everlution\AjaxcomBundle\AjaxcomException;
+use Everlution\AjaxcomBundle\DataObject\Block;
 use Everlution\AjaxcomBundle\Service\RenderBlock;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -43,8 +44,8 @@ class FlashMessages implements MutatorInterface
 
         try {
             $messages = $this->renderBlock->render(
+                new Block($this->flashesBlockId),
                 $this->flashesTemplate,
-                $this->flashesBlockId,
                 ['flashes' => $flashBag->all()]
             );
             $ajax->container("#$this->flashesBlockId")->html($messages);

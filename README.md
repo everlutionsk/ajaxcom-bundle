@@ -55,7 +55,27 @@ everlution_ajaxcom:
     flash_template: @EverlutionAjaxcom/flash_message.html.twig
     flash_block_id: flash_message
     persistent_class: ajaxcom-persistent
-    blocks_to_render: ['content', 'navigation'] # default value is empty array - when you provide this value, AjaxcomBundle will automatically render these blocks within each AJAX request
+    blocks_to_render: # default value is empty array - when you provide this value, AjaxcomBundle will automatically render these blocks within each AJAX request
+          - id: 'content'
+          - id: 'navigation'
+          - id: 'flash_message'
+            refresh: true
+```
+
+By default AjaxcomBundle ignores blocks which are empty and if developer asks to render an empty block we filter out these instances. In case you want to re-render the block with empty content you should set `refresh` flag to true like you can see in above example.
+
+When you want to set refresh flag from controller you need first add the block and then refresh it:
+
+```php
+<?php
+
+public function exampleAction()
+{
+    $this->addBlock('example');
+    $this->refreshAjaxBlock('example');
+    
+    return $this->render('some/template');
+}
 ```
 
 The bundle works best with Bootstrap 3+ CSS framework.

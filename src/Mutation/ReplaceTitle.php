@@ -6,6 +6,7 @@ namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
 use Everlution\AjaxcomBundle\AjaxcomException;
+use Everlution\AjaxcomBundle\DataObject\Block;
 use Everlution\AjaxcomBundle\Service\RenderBlock;
 
 /**
@@ -28,7 +29,7 @@ class ReplaceTitle implements MutatorInterface, RenderableInterface
     public function mutate(Handler $ajax): Handler
     {
         try {
-            $title = $this->renderBlock->render($this->view, 'title', $this->parameters);
+            $title = $this->renderBlock->render(new Block('title'), $this->view, $this->parameters);
             $ajax->container('title')->html($title);
         } catch (AjaxcomException $exception) {
             // do nothing

@@ -6,6 +6,7 @@ namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
 use Everlution\AjaxcomBundle\AjaxcomException;
+use Everlution\AjaxcomBundle\DataObject\Block;
 use Everlution\AjaxcomBundle\Service\RenderBlock;
 
 /**
@@ -33,7 +34,7 @@ class ReplaceStyleSheets implements MutatorInterface, RenderableInterface
         $ajax->container(sprintf('style:not(.%s):not([nonce])', $this->persistentClass))->remove();
 
         try {
-            $styleSheets = $this->renderBlock->render($this->view, 'stylesheets', $this->parameters);
+            $styleSheets = $this->renderBlock->render(new Block('stylesheets'), $this->view, $this->parameters);
             $ajax->container('style:last-of-type')->insertAfter($styleSheets);
         } catch (AjaxcomException $exception) {
             // do nothing

@@ -33,6 +33,13 @@ trait AjaxcomTrait
         return $this;
     }
 
+    protected function refreshAjaxBlock(string $id): self
+    {
+        $this->get('ajaxcom.mutation.add_blocks')->refresh($id);
+
+        return $this;
+    }
+
     protected function removeAjaxBlock(string $selector): self
     {
         $this->get('ajaxcom.mutation.remove_blocks')->add($selector);

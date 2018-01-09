@@ -6,6 +6,7 @@ namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
 use Everlution\AjaxcomBundle\AjaxcomException;
+use Everlution\AjaxcomBundle\DataObject\Block;
 use Everlution\AjaxcomBundle\Service\RenderBlock;
 
 /**
@@ -33,7 +34,7 @@ class ReplaceMetaTags implements MutatorInterface, RenderableInterface
         $ajax->container(sprintf('meta:not(.%s)', $this->persistentClass))->remove();
 
         try {
-            $metaTags = $this->renderBlock->render($this->view, 'metatags', $this->parameters);
+            $metaTags = $this->renderBlock->render(new Block('metatags'), $this->view, $this->parameters);
             $ajax->container('meta:last-of-type')->insertAfter($metaTags);
         } catch (AjaxcomException $exception) {
             // do nothing

@@ -6,6 +6,7 @@ namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
 use Everlution\AjaxcomBundle\AjaxcomException;
+use Everlution\AjaxcomBundle\DataObject\Block;
 use Everlution\AjaxcomBundle\Service\RenderBlock;
 
 /**
@@ -33,7 +34,7 @@ class ReplaceJavaScripts implements MutatorInterface, RenderableInterface
         $ajax->container(sprintf('script:not(.%s):not([nonce])', $this->persistentClass))->remove();
 
         try {
-            $javaScripts = $this->renderBlock->render($this->view, 'javascripts', $this->parameters);
+            $javaScripts = $this->renderBlock->render(new Block('javascripts'), $this->view, $this->parameters);
             $ajax->container('script:last-of-type')->insertAfter($javaScripts);
         } catch (AjaxcomException $exception) {
             // do nothing
