@@ -26,9 +26,11 @@ class Block
         return $this->id;
     }
 
-    public function refresh(): void
+    public function refresh(): Block
     {
         $this->shouldRefresh = true;
+
+        return $this;
     }
 
     public function shouldRefresh(): bool

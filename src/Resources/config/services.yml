@@ -67,7 +67,7 @@ services:
         public: false
         arguments:
             - '@ajaxcom.render_block'
-            - '@session'
+            - '@session.flash_bag'
             - '%everlution.ajaxcom.flash_template%'
             - '%everlution.ajaxcom.flash_block_id%'
 

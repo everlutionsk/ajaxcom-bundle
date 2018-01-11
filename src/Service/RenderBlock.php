@@ -24,12 +24,12 @@ class RenderBlock
     public function render(Block $block, string $template, array $parameters = []): string
     {
         $blockId = $this->getNormalizedId($block);
-        $template = $this->twig->load($template);
-        if (false === $template->hasBlock($blockId)) {
+        $view = $this->twig->load($template);
+        if (false === $view->hasBlock($blockId)) {
             throw new TemplateDoesNotContainBlock();
         }
 
-        $html = $template->renderBlock($blockId, $parameters);
+        $html = $view->renderBlock($blockId, $parameters);
         if (empty($html) && false === $block->shouldRefresh()) {
             throw new BlockIsEmpty();
         }
