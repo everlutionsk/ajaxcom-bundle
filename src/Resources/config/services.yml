@@ -39,6 +39,12 @@ services:
             - '@ajaxcom.render_block'
             - '%everlution.ajaxcom.blocks_to_render%'
 
+    ajaxcom.mutation.replace_content:
+        class: Everlution\AjaxcomBundle\Mutation\ReplaceContent
+        public: true
+        arguments:
+            - '@ajaxcom.render_block'
+
     ajaxcom.mutation.remove_blocks:
         class: Everlution\AjaxcomBundle\Mutation\RemoveBlocks
         public: true

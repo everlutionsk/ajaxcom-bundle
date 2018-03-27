@@ -26,6 +26,13 @@ trait AjaxcomTrait
         return parent::render($view, $parameters, $response);
     }
 
+    protected function replaceBlockContent(string $selector, string $blockId): self
+    {
+        $this->get('ajaxcom.mutation.replace_content')->add($selector, $blockId);
+
+        return $this;
+    }
+
     protected function renderAjaxBlock(string $id): self
     {
         $this->get('ajaxcom.mutation.add_blocks')->add($id);
