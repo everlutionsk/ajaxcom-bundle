@@ -59,6 +59,6 @@ class ChangeUrl implements MutatorInterface
 
     private function getFragment(): array
     {
-        return ['_fragment' => $this->request->headers->get(Ajaxcom::AJAX_COM_FRAGMENT_HEADER)];
+        return ['_fragment' => $this->request->server->get(Ajaxcom::AJAX_COM_FRAGMENT_HEADER)];
     }
 }
