@@ -75,5 +75,12 @@ trait AjaxcomTrait
         return $this;
     }
 
+    protected function appendBlockContent(string $id): self
+    {
+        $this->get('ajaxcom.mutation.append_block_content')->add($id);
+
+        return $this;
+    }
+
     abstract protected function get($id);
 }

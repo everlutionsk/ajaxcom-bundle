@@ -103,3 +103,7 @@ services:
         public: false
         arguments:
             - '@ajaxcom.render_block'
+
+    ajaxcom.mutation.append_block_content:
+        class: Everlution\AjaxcomBundle\Mutation\AppendContent
+        public: true
