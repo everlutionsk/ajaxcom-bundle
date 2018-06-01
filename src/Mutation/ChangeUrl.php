@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
+use Everlution\AjaxcomBundle\Service\Ajaxcom;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -38,7 +39,11 @@ class ChangeUrl implements MutatorInterface
         $ajax->changeUrl(
             $this->router->generate(
                 $this->request->attributes->get('_route'),
-                array_merge($this->request->attributes->get('_route_params'), $this->request->query->all())
+                array_merge(
+                    $this->request->attributes->get('_route_params'),
+                    $this->request->query->all(),
+                    $this->getFragment()
+                )
             )
         );
 
@@ -50,5 +55,10 @@ class ChangeUrl implements MutatorInterface
         $this->changeUrl = false;
 
         return $this;
+    }
+
+    private function getFragment(): array
+    {
+        return ['_fragment' => $this->request->server->get(Ajaxcom::AJAX_COM_FRAGMENT_HEADER)];
     }
 }

@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class Ajaxcom
 {
     const AJAX_COM_HEADER = 'HTTP_X_AJAXCOM';
+    const AJAX_COM_FRAGMENT_HEADER = 'HTTP_X_AJAXCOMFRAGMENT';
     const AJAX_COM_CACHE_CONTROL = ['Cache-Control' => 'no-cache,max-age=0,must-revalidate,no-store'];
 
     /** @var Handler */
