@@ -64,6 +64,13 @@ class AddBlocks implements MutatorInterface, RenderableInterface
         return $this;
     }
 
+    public function remove(string $id): self
+    {
+        unset($this->blocks[$id]);
+
+        return $this;
+    }
+
     public function refresh(string $id): self
     {
         if (false === array_key_exists($id, $this->blocks)) {
