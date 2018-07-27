@@ -25,6 +25,10 @@ trait AjaxcomSymfony4Trait
      */
     private $ajaxcomAddBlocks;
     /**
+     * @var Mutation\AppendBlocks
+     */
+    private $ajaxcomAppendBlocks;
+    /**
      * @var Mutation\RemoveBlocks
      */
     private $ajaxcomRemoveBlocks;
@@ -46,6 +50,7 @@ trait AjaxcomSymfony4Trait
         RequestStack $requestStack,
         Ajaxcom $ajaxcom,
         Mutation\AddBlocks $ajaxcomAddBlocks,
+        Mutation\AppendBlocks $ajaxcomAppendBlocks,
         Mutation\RemoveBlocks $ajaxcomRemoveBlocks,
         Mutation\Callbacks $ajaxcomCallbacks,
         Mutation\ReplaceClass $ajaxcomReplaceClass,
@@ -54,6 +59,7 @@ trait AjaxcomSymfony4Trait
         $this->requestStack = $requestStack;
         $this->ajaxcom = $ajaxcom;
         $this->ajaxcomAddBlocks = $ajaxcomAddBlocks;
+        $this->ajaxcomAppendBlocks = $ajaxcomAppendBlocks;
         $this->ajaxcomRemoveBlocks = $ajaxcomRemoveBlocks;
         $this->ajaxcomCallbacks = $ajaxcomCallbacks;
         $this->ajaxcomReplaceClass = $ajaxcomReplaceClass;
@@ -74,6 +80,20 @@ trait AjaxcomSymfony4Trait
     protected function renderAjaxBlock(string $id): self
     {
         $this->ajaxcomAddBlocks->add($id);
+
+        return $this;
+    }
+
+    protected function dontRenderAjaxBlock(string $id): self
+    {
+        $this->ajaxcomAddBlocks->remove($id);
+
+        return $this;
+    }
+
+    protected function appendAjaxBlock(string $id): self
+    {
+        $this->ajaxcomAppendBlocks->add($id);
 
         return $this;
     }

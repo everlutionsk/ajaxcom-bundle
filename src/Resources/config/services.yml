@@ -26,11 +26,17 @@ services:
             - ['add', ['@ajaxcom.mutation.replace_title']]
             - ['add', ['@ajaxcom.mutation.flash_messages']]
             - ['add', ['@ajaxcom.mutation.remove_blocks']]
+            - ['add', ['@ajaxcom.mutation.append_blocks']]
             - ['add', ['@ajaxcom.mutation.add_blocks']]
             - ['add', ['@ajaxcom.mutation.replace_class']]
             - ['add', ['@ajaxcom.mutation.replace_java_scripts']]
             - ['add', ['@ajaxcom.mutation.callbacks']]
             - ['add', ['@ajaxcom.mutation.change_url']]
+
+    ajaxcom.mutation.append_blocks:
+        class: Everlution\AjaxcomBundle\Mutation\AppendBlocks
+        arguments:
+            - '@ajaxcom.render_block'
 
     ajaxcom.mutation.add_blocks:
         class: Everlution\AjaxcomBundle\Mutation\AddBlocks
