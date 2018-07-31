@@ -44,6 +44,10 @@ trait AjaxcomSymfony4Trait
      * @var Mutation\ChangeUrl
      */
     private $ajaxcomChangeUrl;
+    /**
+     * @var Mutation\PrependBlocks
+     */
+    private $ajaxcomPrependBlocks;
 
     /** @required */
     public function setAjaxcomRequiredServices(
@@ -54,7 +58,8 @@ trait AjaxcomSymfony4Trait
         Mutation\RemoveBlocks $ajaxcomRemoveBlocks,
         Mutation\Callbacks $ajaxcomCallbacks,
         Mutation\ReplaceClass $ajaxcomReplaceClass,
-        Mutation\ChangeUrl $ajaxcomChangeUrl
+        Mutation\ChangeUrl $ajaxcomChangeUrl,
+        Mutation\PrependBlocks $ajaxcomPrependBlocks
     ): void {
         $this->requestStack = $requestStack;
         $this->ajaxcom = $ajaxcom;
@@ -64,6 +69,7 @@ trait AjaxcomSymfony4Trait
         $this->ajaxcomCallbacks = $ajaxcomCallbacks;
         $this->ajaxcomReplaceClass = $ajaxcomReplaceClass;
         $this->ajaxcomChangeUrl = $ajaxcomChangeUrl;
+        $this->ajaxcomPrependBlocks = $ajaxcomPrependBlocks;
     }
 
     protected function render(string $view, array $parameters = array(), Response $response = null): Response
@@ -129,6 +135,13 @@ trait AjaxcomSymfony4Trait
     protected function doNotChangeUrl(): self
     {
         $this->ajaxcomChangeUrl->doNotChangeUrl();
+
+        return $this;
+    }
+
+    protected function prependAjaxBlock(string $id): self
+    {
+        $this->ajaxcomPrependBlocks->add($id);
 
         return $this;
     }
