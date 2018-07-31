@@ -82,9 +82,9 @@ trait AjaxcomTrait
         return $this;
     }
 
-    protected function dontRenderAjaxBlock($id): self
+    protected function prependAjaxBlock(string $id): self
     {
-        $this->get('ajaxcom.mutation.add_blocks')->remove($id);
+        $this->get('ajaxcom.mutation.prepend_blocks')->add($id);
 
         return $this;
     }

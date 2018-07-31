@@ -27,6 +27,7 @@ services:
             - ['add', ['@ajaxcom.mutation.flash_messages']]
             - ['add', ['@ajaxcom.mutation.remove_blocks']]
             - ['add', ['@ajaxcom.mutation.append_blocks']]
+            - ['add', ['@ajaxcom.mutation.prepend_blocks']]
             - ['add', ['@ajaxcom.mutation.add_blocks']]
             - ['add', ['@ajaxcom.mutation.replace_class']]
             - ['add', ['@ajaxcom.mutation.replace_java_scripts']]
@@ -35,6 +36,11 @@ services:
 
     ajaxcom.mutation.append_blocks:
         class: Everlution\AjaxcomBundle\Mutation\AppendBlocks
+        arguments:
+            - '@ajaxcom.render_block'
+
+    ajaxcom.mutation.prepend_blocks:
+        class: Everlution\AjaxcomBundle\Mutation\PrependBlocks
         arguments:
             - '@ajaxcom.render_block'
 
