@@ -115,3 +115,22 @@ services:
         public: false
         arguments:
             - '@ajaxcom.render_block'
+
+    # Symfony 4 autowiring compat
+    Everlution\AjaxcomBundle\Service\Ajaxcom: '@ajaxcom.handler'
+    Everlution\Ajaxcom\Handler: '@everlution.ajaxcom'
+    Everlution\AjaxcomBundle\Service\RenderBlock: '@ajaxcom.render_block'
+    Everlution\AjaxcomBundle\Mutation\Container: '@ajaxcom.mutation.containe'
+    Everlution\AjaxcomBundle\Mutation\AppendBlocks: '@ajaxcom.mutation.append_blocks'
+    Everlution\AjaxcomBundle\Mutation\PrependBlocks: '@ajaxcom.mutation.prepend_blocks'
+    Everlution\AjaxcomBundle\Mutation\AddBlocks: '@ajaxcom.mutation.add_blocks'
+    Everlution\AjaxcomBundle\Mutation\ReplaceContent: '@ajaxcom.mutation.replace_content'
+    Everlution\AjaxcomBundle\Mutation\RemoveBlocks: '@ajaxcom.mutation.remove_blocks'
+    Everlution\AjaxcomBundle\Mutation\Callbacks: '@ajaxcom.mutation.callbacks'
+    Everlution\AjaxcomBundle\Mutation\ReplaceClass: '@ajaxcom.mutation.replace_class'
+    Everlution\AjaxcomBundle\Mutation\ChangeUrl: '@ajaxcom.mutation.change_url'
+    Everlution\AjaxcomBundle\Mutation\FlashMessages: '@ajaxcom.mutation.flash_messages'
+    Everlution\AjaxcomBundle\Mutation\ReplaceJavaScripts: '@ajaxcom.mutation.replace_java_scripts'
+    Everlution\AjaxcomBundle\Mutation\ReplaceMetaTags: '@ajaxcom.mutation.replace_meta_tags'
+    Everlution\AjaxcomBundle\Mutation\ReplaceStyleSheets: '@ajaxcom.mutation.replace_style_sheets'
+    Everlution\AjaxcomBundle\Mutation\ReplaceTitle: '@ajaxcom.mutation.replace_title'
