@@ -26,7 +26,6 @@ class EverlutionAjaxcomExtension extends Extension
         $container->setParameter('everlution.ajaxcom.flash_block_id', $config[C::FLASH_BLOCK_ID]);
         $container->setParameter('everlution.ajaxcom.persistent_class', $config[C::PERSISTENT_CLASS]);
         $container->setParameter('everlution.ajaxcom.blocks_to_render', $config[C::BLOCKS_TO_RENDER]);
-        $container->setParameter('everlution.ajaxcom.change_url', $config[C::CHANGE_URL]);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

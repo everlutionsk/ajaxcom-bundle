@@ -22,13 +22,12 @@ class ChangeUrl implements MutatorInterface
     /** @var UrlGeneratorInterface */
     private $router;
     /** @var bool */
-    private $changeUrl;
+    private $changeUrl = true;
 
-    public function __construct(RequestStack $requestStack, UrlGeneratorInterface $router, bool $changeUrl)
+    public function __construct(RequestStack $requestStack, UrlGeneratorInterface $router)
     {
         $this->router = $router;
         $this->request = $requestStack->getMasterRequest();
-        $this->changeUrl = $changeUrl;
     }
 
     public function mutate(Handler $ajax): Handler
