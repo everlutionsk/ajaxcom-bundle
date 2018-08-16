@@ -76,7 +76,7 @@ trait AjaxcomSymfony4Trait
     {
         $request = $this->requestStack->getMasterRequest();
 
-        if ($request->server->get(Ajaxcom::AJAX_COM_HEADER, false)) {
+        if ($this->isAjax()) {
             return $this->ajaxcom->handle($view, $parameters);
         }
 
@@ -93,6 +93,13 @@ trait AjaxcomSymfony4Trait
     protected function dontRenderAjaxBlock(string $id): self
     {
         $this->ajaxcomAddBlocks->remove($id);
+
+        return $this;
+    }
+
+    protected function addAjaxBlock(string $id): self
+    {
+        $this->ajaxcomAddBlocks->add($id);
 
         return $this;
     }
@@ -144,5 +151,14 @@ trait AjaxcomSymfony4Trait
         $this->ajaxcomPrependBlocks->add($id);
 
         return $this;
+    }
+
+    protected function isAjax(): bool
+    {
+        /** @var Request $request */
+        $request = $this->requestStack->getMasterRequest();
+        $isAjax = $request->server->getBoolean(Ajaxcom::AJAX_COM_HEADER, false);
+
+        return $isAjax;
     }
 }

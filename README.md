@@ -37,10 +37,10 @@ class AppKernel extends Kernel
 
 ### Step 3: Include Ajaxcom library JavasSript within your TWIG layout
 
-Install `@everlutionsk/ajaxcom-js` via `npm` and include `ajaxcom.min.js` to your TWIG layout:
+Install `@everlutionsk/ajaxcom-js` via `npm` and include `ajaxcom.js` to your TWIG layout:
 
 ```twig
-<script type="text/javascript" src="{{ asset('build/ajaxcom.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('build/ajaxcom.js') }}"></script>
 ```
 
 The last thing you need to do is provide some JavaScript handler within your TWIG layout - please follow `@everlutionsk/ajaxcom-js` [documentation](https://github.com/everlutionsk/ajaxcom-js).
@@ -55,6 +55,7 @@ everlution_ajaxcom:
     flash_template: @EverlutionAjaxcom/flash_message.html.twig
     flash_block_id: flash_message
     persistent_class: ajaxcom-persistent
+    change_url: true
     blocks_to_render: # default value is empty array - when you provide this value, AjaxcomBundle will automatically render these blocks within each AJAX request
           - id: 'content'
           - id: 'navigation'
