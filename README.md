@@ -37,10 +37,10 @@ class AppKernel extends Kernel
 
 ### Step 3: Include Ajaxcom library JavasSript within your TWIG layout
 
-Install `@everlutionsk/ajaxcom-js` via `npm` and include `ajaxcom.min.js` to your TWIG layout:
+Install `@everlutionsk/ajaxcom-js` via `npm` and include `ajaxcom.js` to your TWIG layout:
 
 ```twig
-<script type="text/javascript" src="{{ asset('build/ajaxcom.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('build/ajaxcom.js') }}"></script>
 ```
 
 The last thing you need to do is provide some JavaScript handler within your TWIG layout - please follow `@everlutionsk/ajaxcom-js` [documentation](https://github.com/everlutionsk/ajaxcom-js).
