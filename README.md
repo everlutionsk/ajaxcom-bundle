@@ -55,6 +55,7 @@ everlution_ajaxcom:
     flash_template: @EverlutionAjaxcom/flash_message.html.twig
     flash_block_id: flash_message
     persistent_class: ajaxcom-persistent
+    change_url: true
     blocks_to_render: # default value is empty array - when you provide this value, AjaxcomBundle will automatically render these blocks within each AJAX request
           - id: 'content'
           - id: 'navigation'

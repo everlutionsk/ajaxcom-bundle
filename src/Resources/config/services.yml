@@ -79,6 +79,7 @@ services:
         arguments:
             - '@request_stack'
             - '@router.default'
+            - '%everlution.ajaxcom.change_url%'
 
     ajaxcom.mutation.flash_messages:
         class: Everlution\AjaxcomBundle\Mutation\FlashMessages
