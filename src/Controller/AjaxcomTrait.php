@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
  * Class BaseController.
  *
  * @author Ivan Barlog <ivan.barlog@everlution.sk>
+ *
+ * The trait expects you provide a get($service) method,
+ * for example via Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait
  */
 trait AjaxcomTrait
 {
@@ -88,6 +91,4 @@ trait AjaxcomTrait
 
         return $this;
     }
-
-    abstract protected function get($id);
 }
