@@ -6,6 +6,7 @@ namespace Everlution\AjaxcomBundle\Mutation;
 
 use Everlution\Ajaxcom\Handler;
 use Everlution\AjaxcomBundle\DataObject\Callback as AjaxCallback;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -17,34 +18,34 @@ class Callbacks implements MutatorInterface
 {
     const SESSION_KEY = 'ajaxcom/callbacks';
 
-    /** @var Session */
-    private $session;
+    /** @var RequestStack */
+    private $requestStack;
 
-    public function __construct(Session $session)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     public function mutate(Handler $ajax): Handler
     {
         /** @var AjaxCallback[] $callbacks */
-        $callbacks = $this->session->get(self::SESSION_KEY, []);
+        $callbacks = $this->requestStack->getSession()->get(self::SESSION_KEY, []);
         uasort($callbacks, [$this, 'sortByPriority']);
 
         foreach ($callbacks as $callback) {
             $ajax->callback($callback->getFunction(), $callback->getParameters());
         }
 
-        $this->session->remove(self::SESSION_KEY);
+        $this->requestStack->getSession()->remove(self::SESSION_KEY);
 
         return $ajax;
     }
 
     public function add(AjaxCallback $callback): self
     {
-        $callbacks = $this->session->get(self::SESSION_KEY, []);
+        $callbacks = $this->requestStack->getSession()->get(self::SESSION_KEY, []);
         $callbacks[] = $callback;
-        $this->session->set(self::SESSION_KEY, $callbacks);
+        $this->requestStack->getSession()->set(self::SESSION_KEY, $callbacks);
 
         return $this;
     }

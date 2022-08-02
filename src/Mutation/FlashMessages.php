@@ -8,6 +8,7 @@ use Everlution\Ajaxcom\Handler;
 use Everlution\AjaxcomBundle\AjaxcomException;
 use Everlution\AjaxcomBundle\DataObject\Block;
 use Everlution\AjaxcomBundle\Service\RenderBlock;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 /**
@@ -19,8 +20,8 @@ class FlashMessages implements MutatorInterface
 {
     /** @var RenderBlock */
     private $renderBlock;
-    /** @var FlashBagInterface */
-    private $flashBag;
+    /** @var RequestStack */
+    private $requestStack;
     /** @var string */
     private $flashesTemplate;
     /** @var string */
@@ -28,12 +29,12 @@ class FlashMessages implements MutatorInterface
 
     public function __construct(
         RenderBlock $renderBlock,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         string $flashesTemplate,
         string $flashesBlockId
     ) {
         $this->renderBlock = $renderBlock;
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->flashesTemplate = $flashesTemplate;
         $this->flashesBlockId = $flashesBlockId;
     }
@@ -44,7 +45,7 @@ class FlashMessages implements MutatorInterface
             $messages = $this->renderBlock->render(
                 (new Block($this->flashesBlockId))->refresh(),
                 $this->flashesTemplate,
-                ['flashes' => $this->flashBag->all()]
+                ['flashes' => $this->requestStack->getSession()->getFlashBag()->all()]
             );
             $ajax->container("#$this->flashesBlockId")->html($messages);
         } catch (AjaxcomException $exception) {

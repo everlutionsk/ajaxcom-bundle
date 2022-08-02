@@ -74,7 +74,7 @@ trait AjaxcomSymfony4Trait
 
     protected function render(string $view, array $parameters = array(), Response $response = null): Response
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
 
         if ($this->isAjax()) {
             return $this->ajaxcom->handle($view, $parameters);
@@ -156,7 +156,7 @@ trait AjaxcomSymfony4Trait
     protected function isAjax(): bool
     {
         /** @var Request $request */
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         $isAjax = $request->server->getBoolean(Ajaxcom::AJAX_COM_HEADER, false);
 
         return $isAjax;
