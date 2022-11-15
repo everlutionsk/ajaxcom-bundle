@@ -50,7 +50,7 @@ class FlashMessages implements MutatorInterface
             $messages = $this->renderBlock->render(
                 (new Block($this->flashesBlockId))->refresh(),
                 $this->flashesTemplate,
-                ['flashes' => $session->getFlashBag()->all()]
+                ['flashes' => $session->/** @scrutinizer ignore-call */getFlashBag()->all()]
             );
             $ajax->container("#$this->flashesBlockId")->html($messages);
         } catch (AjaxcomException $exception) {
