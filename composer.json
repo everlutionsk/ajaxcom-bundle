@@ -8,15 +8,15 @@
         }
     },
     "require": {
-        "php": "^7.1|^8.0",
+        "php": "^8.0",
         "everlutionsk/ajaxcom-php": "^1.1",
-        "symfony/framework-bundle": "^3.4.26|^4.1.12|^5.0",
-        "symfony/http-foundation": "^3.4.26|^4.1.12|^5.0",
-        "symfony/routing": "^3.4.26|^4.1.12|^5.0",
-        "symfony/config": "^3.4.26|^4.1.12|^5.0",
-        "symfony/dependency-injection": "^3.4.26|^4.1.12|^5.0",
-        "symfony/http-kernel": "^3.4.26|^4.1.12|^5.0",
-        "symfony/twig-bundle": "^3.4.26|^4.1.12|^5.0"
+        "symfony/framework-bundle": ">=6.0",
+        "symfony/http-foundation": ">=6.0",
+        "symfony/routing": ">=6.0",
+        "symfony/config": ">=6.0",
+        "symfony/dependency-injection": ">=6.0",
+        "symfony/http-kernel": ">=6.0",
+        "symfony/twig-bundle": ">=6.0"
     },
     "license": "MIT",
     "authors": [

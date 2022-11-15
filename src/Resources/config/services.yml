@@ -4,7 +4,7 @@ services:
         public: true
         arguments:
             - '@everlution.ajaxcom'
-            - '@ajaxcom.mutation.containe'
+            - '@ajaxcom.mutation.container'
 
     everlution.ajaxcom:
         class: Everlution\Ajaxcom\Handler
@@ -17,7 +17,7 @@ services:
             - '@twig'
 
     # mutations
-    ajaxcom.mutation.containe:
+    ajaxcom.mutation.container:
         class: Everlution\AjaxcomBundle\Mutation\Container
         # the order of following call is important
         calls:
@@ -65,7 +65,7 @@ services:
         class: Everlution\AjaxcomBundle\Mutation\Callbacks
         public: true
         arguments:
-            - '@session'
+            - '@request_stack'
 
     ajaxcom.mutation.replace_class:
         class: Everlution\AjaxcomBundle\Mutation\ReplaceClass
@@ -85,7 +85,7 @@ services:
         public: false
         arguments:
             - '@ajaxcom.render_block'
-            - '@session.flash_bag'
+            - '@request_stack'
             - '%everlution.ajaxcom.flash_template%'
             - '%everlution.ajaxcom.flash_block_id%'
 
@@ -120,7 +120,7 @@ services:
     Everlution\AjaxcomBundle\Service\Ajaxcom: '@ajaxcom.handler'
     Everlution\Ajaxcom\Handler: '@everlution.ajaxcom'
     Everlution\AjaxcomBundle\Service\RenderBlock: '@ajaxcom.render_block'
-    Everlution\AjaxcomBundle\Mutation\Container: '@ajaxcom.mutation.containe'
+    Everlution\AjaxcomBundle\Mutation\Container: '@ajaxcom.mutation.container'
     Everlution\AjaxcomBundle\Mutation\AppendBlocks: '@ajaxcom.mutation.append_blocks'
     Everlution\AjaxcomBundle\Mutation\PrependBlocks: '@ajaxcom.mutation.prepend_blocks'
     Everlution\AjaxcomBundle\Mutation\AddBlocks: '@ajaxcom.mutation.add_blocks'

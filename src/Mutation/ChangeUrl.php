@@ -27,7 +27,7 @@ class ChangeUrl implements MutatorInterface
     public function __construct(RequestStack $requestStack, UrlGeneratorInterface $router)
     {
         $this->router = $router;
-        $this->request = $requestStack->getMasterRequest();
+        $this->request = $requestStack->getMainRequest();
     }
 
     public function mutate(Handler $ajax): Handler
