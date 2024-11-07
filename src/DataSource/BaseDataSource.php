@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Everlution\AjaxcomBundle\DataSource;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
+
 /**
  * Class BaseDataSource.
  *
  * @author Ivan Barlog <ivan.barlog@everlution.sk>
  */
-class BaseDataSource extends \Twig_Extension
+class BaseDataSource extends AbstractExtension
 {
     protected const TWIG_FUNCTION_SUFFIX = 'Provider';
 
@@ -36,8 +39,8 @@ class BaseDataSource extends \Twig_Extension
         return $functions;
     }
 
-    private function registerAsTwigFunction(string $name): ?\Twig_SimpleFunction
+    private function registerAsTwigFunction(string $name): ?TwigFunction
     {
-        return new \Twig_SimpleFunction($name, [$this, $name.self::TWIG_FUNCTION_SUFFIX]);
+        return new TwigFunction($name, [$this, $name.self::TWIG_FUNCTION_SUFFIX]);
     }
 }
